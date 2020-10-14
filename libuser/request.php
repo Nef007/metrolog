@@ -2,22 +2,9 @@
 	$request = xss($_REQUEST);
 	if (isset($request["message_bad"])) $message_bad = $request["message_bad"];
 	if (isset($request["message_good"])) $message_good = $request["message_good"];
-	// if (isset($request["order"])) {
-	// 	$data = array();
-	// 	$data["marka"] = $request["marka"];
-	// 	$data["date_order"] = time();
-	// 	$data["camp_id"] = (isset($_SESSION["camp_id"]) && $_SESSION["camp_id"])? $_SESSION["camp_id"] : null;
-	// 	$data["split"] = (isset($_SESSION["split"]) && $_SESSION["split"])? $_SESSION["split"] : null;
-	// 	if (addOrder($data)) {
-	// 		sendOrder($request["marka"]);
-	// 		redirect("/order.php");
-	// 	}
-	// 	else $message = "Произошла ошибка при отправке формы! Повторите попытку или обратитесь к администрации.";
-	// }
-	// else
+	
 	if (isset($request["auth"])) {
-		//if (login($request["login"], $request["password"])) redirect("/");
-		//else $message = "Неверные имя пользователя и/или пароль!";
+		
 ///////////////////////////Начало авторизации/////////////////////////////////
 /*
     Проверяем была ли отправлена форма, то есть была ли нажата кнопка Войти. Если да, то идём дальше, если нет, то выведем пользователю сообщение об ошибке, о том что он зашёл на эту страницу напрямую.
@@ -142,7 +129,7 @@ $massage_bad = "Ошибка запроса на выборке пользова
 
 	//Возвращаем пользователя на страницу авторизации
 		header("HTTP/1.1 301 Moved Permanently");
-		header("Location: /?massage_bad=".urlencode($massage_bad));
+		header("Location: /auth.php?massage_bad=".urlencode($massage_bad));
 		
 
 	//Останавливаем скрипт
