@@ -1,0 +1,4 @@
+RewriteEngine off
+RewriteBase /
+
+php_value session.gc_maxlifetime 15
