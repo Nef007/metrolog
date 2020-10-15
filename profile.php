@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'vendor/connect.php';
 if (!$_SESSION['user']) {
     header('Location: /');
 }
@@ -14,7 +15,7 @@ if (!$_SESSION['user']) {
     <title>Метрология</title>
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/main.css">
-    
+
 </head>
 
 <body>
@@ -24,14 +25,80 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <div id="logout">
-                        <a href="vendor/logout.php" class="logout">Выход</a>
+                    <div class="logout">
+                        <a href="vendor/logout.php">Выход</a>
                     </div>
-
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <h1>Приборы <?php echo $_SESSION['user']['distr']; ?> </h1>
                 </div>
             </div>
         </div>
     </header>
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1 ">
+                    <button class="button">
+                        Добавить СИ
+                    </button>
+                </div>
+                <div class="col-lg-1 offset-lg-0 ">
+                    <button class="button">
+                        Выгрузить в Exel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <table>
+                        <tr>
+                            <th>Наименование</th>
+                            <th>Тип,марка</th>
+                            <th>Заводской номер</th>
+                            <th>Паспорт</th>
+                            <th>год выпуска</th>
+                            <th>Дата поверки</th>
+                            <th>Дата следующей поверки</th>
+                        </tr>
+
+                        <?php
+                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
+                        $devices = mysqli_fetch_all($devices);
+                        foreach ($devices as $device) {
+                            // Обработать картинку!!!!!!!!!!!!!!!!!!!
+                            echo '
+                         
+                    <tr>
+                
+                        <td>' . $device[1] . '</td>
+                        <td>' . $device[2] . '</td>
+                        <td>' . $device[3] . '</td>
+                        <td>' . $device[3] . '</td>
+                        <td>' . $device[4] . '</td>
+                        <td>' . $device[5] . '</td>
+                        <td>' . $device[6] . '</td>
+                        
+                  
+                </tr>
+                    ';
+                        }
+                        ?>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 
 
