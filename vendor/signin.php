@@ -29,18 +29,19 @@ if (!empty($error_fields)) {
     die();
 }
 
-$password = md5($password);
+// $password = md5($password); Убрал шифрование
 
 $check_user = mysqli_query($connect, "SELECT * FROM `users` WHERE `login` = '$login' AND `password` = '$password'");
 if (mysqli_num_rows($check_user) > 0) {
 
     $user = mysqli_fetch_assoc($check_user);
 
+
+    // Что передавать на сайт?
     $_SESSION['user'] = [
-        "id" => $user['id'],
-        "full_name" => $user['full_name'],
-        "avatar" => $user['avatar'],
-        "email" => $user['email']
+        "id" => $user['user_id'],
+        "distr" => $user['distr'],
+        
     ];
 
     $response = [
@@ -58,6 +59,3 @@ if (mysqli_num_rows($check_user) > 0) {
 
     echo json_encode($response);
 }
-
-
-?>

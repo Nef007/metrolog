@@ -9,7 +9,7 @@ if (!$_SESSION['user']) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизация и регистрация</title>
+    <title>Метрология</title>
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>

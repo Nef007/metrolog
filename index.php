@@ -12,7 +12,7 @@ if ($_SESSION['user']) {
 
 <head>
     <meta charset="UTF-8">
-    <title>Авторизация и регистрация</title>
+    <title>Авторизация</title>
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
@@ -29,9 +29,7 @@ if ($_SESSION['user']) {
 
         <input type="password" name="password" placeholder="Введите пароль">
         <button type="submit" class="login-btn">Войти</button>
-        <p>
-            У вас нет аккаунта? - <a href="/register.php">зарегистрируйтесь</a>!
-        </p>
+       
         <p class="msg none">Lorem ipsum dolor sit amet.</p>
     </form>
 
