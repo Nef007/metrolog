@@ -41,15 +41,16 @@ if (mysqli_num_rows($check_user) > 0) {
     $_SESSION['user'] = [
         "id" => $user['user_id'],
         "distr" => $user['distr'],
-        
+        "access" => $user['access'],
+
     ];
 
     $response = [
-        "status" => true
+        "status" => true,
+        "access" => $user['access'],
     ];
 
     echo json_encode($response);
-
 } else {
 
     $response = [
