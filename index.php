@@ -13,7 +13,7 @@ if ($_SESSION['user']) {
 <head>
     <meta charset="UTF-8">
     <title>Авторизация</title>
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/main_aut.css">
 </head>
 
 <body>
@@ -29,7 +29,7 @@ if ($_SESSION['user']) {
 
         <input type="password" name="password" placeholder="Введите пароль">
         <button type="submit" class="login-btn">Войти</button>
-       
+
         <p class="msg none">Lorem ipsum dolor sit amet.</p>
     </form>
 
