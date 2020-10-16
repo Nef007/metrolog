@@ -16,6 +16,7 @@ if (!$_SESSION['user']) {
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/main.css">
 
+
 </head>
 
 <body>
@@ -51,6 +52,7 @@ if (!$_SESSION['user']) {
                         Выгрузить в Exel
                     </button>
                 </div>
+
             </div>
         </div>
     </section>
@@ -71,7 +73,7 @@ if (!$_SESSION['user']) {
                         </tr>
 
                         <?php
-                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
+                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki` 'dev_img' FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
                         $devices = mysqli_fetch_all($devices);
                         foreach ($devices as $device) {
                             // Обработать картинку!!!!!!!!!!!!!!!!!!!
@@ -82,7 +84,7 @@ if (!$_SESSION['user']) {
                         <td>' . $device[1] . '</td>
                         <td>' . $device[2] . '</td>
                         <td>' . $device[3] . '</td>
-                        <td>' . $device[3] . '</td>
+                        <td>' . $device[7] . '</td>
                         <td>' . $device[4] . '</td>
                         <td>' . $device[5] . '</td>
                         <td>' . $device[6] . '</td>
@@ -99,10 +101,6 @@ if (!$_SESSION['user']) {
         </div>
     </section>
 
-
-
-
-
     <!-- Модальное окно получить консультацию -->
     <div class="popup">
         <!-- Само белое модальное окно -->
@@ -111,46 +109,45 @@ if (!$_SESSION['user']) {
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
-                    <?php if (isset($request["func"]) && $request["func"] == "edit") { ?>Редактировать<?php } else { ?>Добавить<?php } ?> прибор
+                    Добавить прибор
                 </h4>
                 <div id="form_order">
-
-                    <h1></h1>
-                    <form class="addform" name="form_order" action="index.php<?php if (isset($request["func"]) && $request["func"] == "edit") { ?>?func=edit&amp;id=<?= $fd["id"] ?><?php } ?>" method="post" enctype="multipart/form-data">
+                    <form class="addform">
 
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" value="<?php if (isset($fd["dev_name"]) && $fd["dev_name"]) { ?><?= $fd["dev_name"] ?><?php } ?>" />
+                            <label>Наименование:</label> <input type="text" name="name" />
                         </div>
                         <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka" value="<?php if (isset($fd["dev_marka"]) && $fd["dev_marka"]) { ?><?= $fd["dev_marka"] ?><?php } ?>" />
+                            <label>Тип,марка:</label> <input type="text" name="marka" />
                         </div>
                         <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number" value="<?php if (isset($fd["dev_zav_number"]) && $fd["dev_zav_number"]) { ?><?= $fd["dev_zav_number"] ?><?php } ?>" />
+                            <label>Заводской №:</label> <input type="text" name="zav_number" />
                         </div>
                         <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport" value="<?php if (isset($fd["pasport"]) && $fd["pasport"]) { ?><?= $fd["pasport"] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release" value="<?php if (isset($fd["dev_data_release"]) && $fd["dev_data_release"]) { ?><?= $fd["dev_data_release"] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" value="<?php if (isset($fd["dev_data_pred_poverki"]) && $fd["dev_data_pred_poverki"]) { ?><?= $fd["dev_data_pred_poverki"] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Дата следующей поверки:</label> <input type="date" name="dev_data_poverki" value="<?php if (isset($fd["dev_data_poverki"]) && $fd["dev_data_poverki"]) { ?><?= $fd["dev_data_poverki"] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <input type="hidden" name="id" value="<?php if (isset($fd["id"])) { ?><?= $fd["id"] ?><?php } ?>" />
-                            <input type="submit" name="<?php if (isset($request["func"]) && $request["func"] == "edit") { ?>edit<?php } else { ?>add<?php } ?>" value="<?php if (isset($request["func"]) && $request["func"] == "edit") { ?>Редактировать<?php } else { ?>Добавить<?php } ?>" />
-                        </div>
+                            <label>Паспорт:</label> <input type="file" name="pasport" />
+                            <div>
+                                <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
+                            </div>
+                            <div>
+                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
+                            </div>
+                            <div>
+                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
+                            </div>
+                            <div class="popup-subbtn">
+                                <input type="submit" class="add-btn" value="Добавить" />
+                            </div>
+                            <div class="popup-msg">
+                                <p class="msg none">Lorem ipsum dolor sit amet.</p>
+                            </div>
                     </form>
                 </div>
-
-                </form>
             </div>
         </div>
     </div>
     <!-- подключение jqweri -->
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/main.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
     <script>
@@ -166,14 +163,13 @@ if (!$_SESSION['user']) {
 
         });
     </script>
+    <!-- Конец модального окна -->
+
 
 
 
 
 
 </body>
-
-
-
 
 </html>
