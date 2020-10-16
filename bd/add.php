@@ -11,18 +11,18 @@ $dev_data_poverki = $_POST['dev_data_poverki'];
 $distr_id = $_SESSION['user']['distr_id'];
 
 
-// $check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `zav_number` = '$zav_number'");
-// if (mysqli_num_rows($check_zav_number) > 0) {
-//     $response = [
-//         "status" => false,
-//         "type" => 1,
-//         "message" => "Такой заводской номер уже существует",
-//         "fields" => ['zav_number']
-//     ];
+$check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `dev_zav_number` = '$zav_number'");
+if (mysqli_num_rows($check_zav_number) > 0) {
+    $response = [
+        "status" => false,
+        "type" => 1,
+        "message" => "Такой заводской номер уже существует",
+        "fields" => ['zav_number']
+    ];
 
-//     echo json_encode($response);
-//     die();
-// }
+    echo json_encode($response);
+    die();
+}
 
 
 
@@ -81,10 +81,12 @@ if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
     echo json_encode($response);
 }
 
+// echo $_FILES['pasport'];
+
 
 
 mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_pred_poverki`, `dev_data_release`, `dev_data_poverki`, `dev_img`) 
-VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$pasport')");
+VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$path')");
 
 
 $response = [

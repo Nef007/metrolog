@@ -69,16 +69,23 @@ $(".add-btn").click(function (e) {
   formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
   formData.append("dev_data_poverki", dev_data_poverki);
 
+  function funcBefore() {
+    $(".msg").removeClass("none").text("");
+    $(".gifload").removeClass("none");
+  }
+
   $.ajax({
     url: "../../bd/add.php",
     type: "POST",
     dataType: "json",
     processData: false,
     contentType: false,
+    beforeSend: funcBefore,
     cache: false,
     data: formData,
     success(data) {
       if (data.status) {
+        $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
         document.location.href = "../profile.php";
       } else {
@@ -87,7 +94,7 @@ $(".add-btn").click(function (e) {
             $(`input[name="${field}"]`).addClass("error");
           });
         }
-
+        $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
       }
     },

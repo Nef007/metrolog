@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'vendor/connect.php';
+require_once 'vendor/functions.php';
 if (!$_SESSION['user']) {
     header('Location: /');
 }
@@ -73,26 +74,35 @@ if (!$_SESSION['user']) {
                         </tr>
 
                         <?php
-                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki` 'dev_img' FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
+                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
                         $devices = mysqli_fetch_all($devices);
                         foreach ($devices as $device) {
+
+                            if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
+                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                            } elseif (!empty($device[7]) && getExtension($device[7]) === "jpg") {
+                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
+                            }
                             // Обработать картинку!!!!!!!!!!!!!!!!!!!
                             echo '
-                         
-                    <tr>
-                
-                        <td>' . $device[1] . '</td>
-                        <td>' . $device[2] . '</td>
-                        <td>' . $device[3] . '</td>
-                        <td>' . $device[7] . '</td>
-                        <td>' . $device[4] . '</td>
-                        <td>' . $device[5] . '</td>
-                        <td>' . $device[6] . '</td>
-                        
-                  
-                </tr>
-                    ';
+
+                                <tr>
+
+                                    <td>' . $device[1] . '</td>
+                                    <td>' . $device[2] . '</td>
+                                    <td>' . $device[3] . '</td>
+                                    <td>' . $device[7] . '</td>
+                                    <td>' . $device[4] . '</td>
+                                    <td>' . $device[5] . '</td>
+                                    <td>' . $device[6] . '</td>
+
+
+                            </tr>
+                                ';
                         }
+
+
+
                         ?>
 
                     </table>
@@ -138,7 +148,8 @@ if (!$_SESSION['user']) {
                                 <input type="submit" class="add-btn" value="Добавить" />
                             </div>
                             <div class="popup-msg">
-                                <p class="msg none">Lorem ipsum dolor sit amet.</p>
+                                <p class="gifload  none"></p>
+                                <p class="msg  none">LOrem</p>
                             </div>
                     </form>
                 </div>
@@ -148,7 +159,7 @@ if (!$_SESSION['user']) {
     <!-- подключение jqweri -->
     <script src="assets/js/jquery-3.4.1.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
 
     <script>
         $(document).ready(function() {
