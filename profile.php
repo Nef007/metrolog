@@ -43,12 +43,13 @@ if (!$_SESSION['user']) {
     <section>
         <div class="container">
             <div class="row">
-                <div class="col-lg-1 ">
+                <div class="col-lg-12 ">
                     <button class="button popup-btn">
                         Добавить СИ
                     </button>
-                </div>
-                <div class="col-lg-1 offset-lg-0 ">
+                    <button class="button popup-btn">
+                        Выборка
+                    </button>
                     <button class="button">
                         Выгрузить в Exel
                     </button>
