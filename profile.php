@@ -114,7 +114,6 @@ if (!$_SESSION['user']) {
     </section>
 
 
-
     <section>
         <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
         <div class="popup-add">
@@ -129,7 +128,7 @@ if (!$_SESSION['user']) {
                     <form class="addform">
 
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" value="<?php echo $name; ?>" />
+                            <label>Наименование:</label> <input type="text" name="name" />
                         </div>
                         <div>
                             <label>Тип,марка:</label> <input type="text" name="marka" />
@@ -178,7 +177,7 @@ if (!$_SESSION['user']) {
                     <form class="addform">
 
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" value="<?php echo $name; ?>" />
+                            <label>Наименование:</label> <input type="text" name="name" />
                         </div>
                         <div>
                             <label>Тип,марка:</label> <input type="text" name="marka" />
