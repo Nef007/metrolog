@@ -44,10 +44,10 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <button class="button popup-btn">
+                    <button class="button popup-add-btn">
                         Добавить СИ
                     </button>
-                    <button class="button popup-btn">
+                    <button class="button popup-select-btn">
                         Выборка
                     </button>
                     <button class="button">
@@ -110,12 +110,15 @@ if (!$_SESSION['user']) {
                 </div>
             </div>
         </div>
+
     </section>
 
-    <!-- Модальное окно получить консультацию -->
-    <div class="popup">
-        <!-- Само белое модальное окно -->
-        <div class="popup-dialog">
+
+
+    <section>
+        <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
+        <div class="popup-add">
+            <!-- Само белое модальное окно -->
             <!-- содержмое модального окна -->
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
@@ -126,7 +129,7 @@ if (!$_SESSION['user']) {
                     <form class="addform">
 
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" />
+                            <label>Наименование:</label> <input type="text" name="name" value="<?php echo $name; ?>" />
                         </div>
                         <div>
                             <label>Тип,марка:</label> <input type="text" name="marka" />
@@ -145,10 +148,10 @@ if (!$_SESSION['user']) {
                             <div>
                                 <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
                             </div>
-                            <div class="popup-subbtn">
+                            <div class="popup-add-subbtn">
                                 <input type="submit" class="add-btn" value="Добавить" />
                             </div>
-                            <div class="popup-msg">
+                            <div class="popup-add-msg">
                                 <p class="gifload  none"></p>
                                 <p class="msg  none">LOrem</p>
                             </div>
@@ -156,7 +159,62 @@ if (!$_SESSION['user']) {
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+
+
+
+    <section>
+        <!-- Модальное окно Выборка -->
+        <div class="popup-select">
+            <!-- Само белое модальное окно -->
+            <!-- содержмое модального окна -->
+            <div class="popup-content">
+                <button class="popup-close">&times;</button>
+                <h4 class="popup-header">
+                    Выборка
+                </h4>
+                <div id="form_order">
+                    <form class="addform">
+
+                        <div>
+                            <label>Наименование:</label> <input type="text" name="name" value="<?php echo $name; ?>" />
+                        </div>
+                        <div>
+                            <label>Тип,марка:</label> <input type="text" name="marka" />
+                        </div>
+                        <div>
+                            <label>Заводской №:</label> <input type="text" name="zav_number" />
+                        </div>
+                        <div>
+                            <label>Паспорт:</label> <input type="file" name="pasport" />
+                            <div>
+                                <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
+                            </div>
+                            <div>
+                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
+                            </div>
+                            <div>
+                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
+                            </div>
+                            <div class="popup-select-subbtn">
+                                <input type="submit" class="select-btn" value="Добавить" />
+                            </div>
+                            <div class="popup-select-msg">
+                                <p class="gifload  none"></p>
+                                <p class="msg  none">LOrem</p>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+
+
     <!-- подключение jqweri -->
     <script src="assets/js/jquery-3.4.1.min.js"></script>
     <script src="assets/js/main.js"></script>
@@ -164,13 +222,21 @@ if (!$_SESSION['user']) {
 
     <script>
         $(document).ready(function() {
-            $(".popup-btn").on("click", function(event) {
-                event.preventDefault();
-                $(".popup").fadeIn();
+
+            $(".popup-add-btn").on("click", function() {
+                $(".popup-add").fadeIn();
+
             });
+
+            $(".popup-select-btn").on("click", function() {
+                $(".popup-select").fadeIn();
+
+            });
+
+
             $(".popup-close").on("click", function() {
-                event.preventDefault();
-                $(".popup").fadeOut();
+                $(".popup-add").fadeOut();
+                $(".popup-select").fadeOut();
             });
 
         });

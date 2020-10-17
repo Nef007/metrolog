@@ -11,6 +11,15 @@ $dev_data_poverki = $_POST['dev_data_poverki'];
 $distr_id = $_SESSION['user']['distr_id'];
 
 
+if (!empty($_POST['name'])) {
+    SetCookie("name", $_POST['name'], time() + 31536000);
+}
+
+$email = !empty($_COOKIE['name']) ? $_COOKIE['name'] : '';
+
+
+
+
 $check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `dev_zav_number` = '$zav_number'");
 if (mysqli_num_rows($check_zav_number) > 0) {
     $response = [
