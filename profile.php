@@ -5,6 +5,8 @@ require_once 'vendor/functions.php';
 if (!$_SESSION['user']) {
     header('Location: /');
 }
+
+
 ?>
 
 <!doctype html>
@@ -34,7 +36,7 @@ if (!$_SESSION['user']) {
             </div>
             <div class="row">
                 <div class="col-lg-12 ">
-                    <h1>Приборы <?php echo $_SESSION['user']['distr']; ?> </h1>
+                    <h1> <?php echo $_SESSION['user']['distr']; ?> </h1>
                 </div>
             </div>
         </div>
@@ -45,7 +47,7 @@ if (!$_SESSION['user']) {
             <div class="row">
                 <div class="col-lg-12 ">
                     <button class="button popup-add-btn">
-                        Добавить СИ
+                        Добавить
                     </button>
                     <button class="button popup-select-btn">
                         Выборка
@@ -102,8 +104,6 @@ if (!$_SESSION['user']) {
                                 ';
                         }
 
-
-
                         ?>
 
                     </table>
@@ -122,7 +122,7 @@ if (!$_SESSION['user']) {
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
-                    Добавить прибор
+                    Добавить
                 </h4>
                 <div id="form_order">
                     <form class="addform">
@@ -161,13 +161,12 @@ if (!$_SESSION['user']) {
     </section>
 
 
-
+    <!-- Модальное окно Выборка -->
 
     <section>
-        <!-- Модальное окно Выборка -->
         <div class="popup-select">
-            <!-- Само белое модальное окно -->
-            <!-- содержмое модального окна -->
+
+
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
@@ -177,7 +176,7 @@ if (!$_SESSION['user']) {
                     <form class="addform">
 
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" />
+                            <label>Наименование:</label> <input type="text" name="name" value="<?= $_SESSION["form_add"]["name"] ?>" />
                         </div>
                         <div>
                             <label>Тип,марка:</label> <input type="text" name="marka" />
@@ -197,7 +196,7 @@ if (!$_SESSION['user']) {
                                 <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
                             </div>
                             <div class="popup-select-subbtn">
-                                <input type="submit" class="select-btn" value="Добавить" />
+                                <input type="submit" class="select-btn" value="Выбрать" />
                             </div>
                             <div class="popup-select-msg">
                                 <p class="gifload  none"></p>

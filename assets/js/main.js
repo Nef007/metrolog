@@ -60,8 +60,6 @@ $(".add-btn").click(function (e) {
   dev_data_pred_poverki = $('input[name="dev_data_pred_poverki"]').val();
   dev_data_poverki = $('input[name="dev_data_poverki"]').val();
 
-  // SetCookie("name", name, time() + 31536000);
-
   let formData = new FormData();
   formData.append("name", name);
   formData.append("marka", marka);
