@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../vendor/connect.php';
-unset($_SESSION["sql"]);
+unset($_SESSION["sql"]["sql"]);
 $name = $_POST['name'];
 $marka = $_POST['marka'];
 $zav_number = $_POST['zav_number'];
@@ -110,9 +110,9 @@ function addWhere($where, $add, $and = true, $ferst = false)
 // Принимаем ИМЯ
 $search = explode(' ', $_POST['name']);
 
-$where = "";
+
 //если оно есть
-if ($search) {
+if (!empty($_POST['name'])) {
     $where = "(";
     if (count($search) === 1) {
         //  если оно одно 
@@ -138,7 +138,7 @@ $search = explode(' ', $_POST['marka']);
 
 
 //если оно есть
-if ($search) {
+if (!empty($_POST['marka'])) {
     // и если имя есть
     if ($where) {
         $where .= "AND (";
@@ -170,10 +170,16 @@ $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_
     `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and ";
 if ($where) {
     $sql .= "$where";
-    $_SESSION['sql'] = $sql;
+    $_SESSION['sql'] = [
+        "sql" =>  $sql,
+        "btn" => true,
+    ];
 } else {
 
-    $_SESSION['sql'] = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+    $_SESSION['sql'] = [
+        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id",
+        "btn" => false,
+    ];
 }
 
 
@@ -188,6 +194,7 @@ if ($where) {
 
 
 $response = [
+
     "status" => true,
     "message" => "Показываю результат!",
 ];

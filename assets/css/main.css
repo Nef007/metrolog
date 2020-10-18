@@ -121,3 +121,6 @@ input {
   border-bottom: 2px solid #e3e3e3;
   outline: none;
 }
+.select-color {
+  background-color: #e3a103;
+}

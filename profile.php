@@ -49,7 +49,9 @@ if (!$_SESSION['user']) {
                     <button class="button popup-add-btn">
                         Добавить
                     </button>
-                    <button class="button popup-select-btn">
+                    <button class="button popup-select-btn  <?php if ($_SESSION['sql']['btn'])
+                                                                echo "select-color";
+                                                            ?>">
                         Фильтр
                     </button>
                     <button class="button">
@@ -78,10 +80,10 @@ if (!$_SESSION['user']) {
 
                         <?php
 
-                        if (empty($_SESSION['sql'])) {
+                        if (empty($_SESSION['sql']['sql'])) {
                             $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
                         } else {
-                            $sql = $_SESSION['sql'];
+                            $sql = $_SESSION['sql']['sql'];
                         }
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
