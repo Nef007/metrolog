@@ -77,7 +77,13 @@ if (!$_SESSION['user']) {
                         </tr>
 
                         <?php
-                        $devices = mysqli_query($connect, "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id");
+
+                        if (empty($_SESSION['sql'])) {
+                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+                        } else {
+                            $sql = $_SESSION['sql'];
+                        }
+                        $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
                         foreach ($devices as $device) {
 
@@ -86,7 +92,7 @@ if (!$_SESSION['user']) {
                             } elseif (!empty($device[7]) && getExtension($device[7]) === "jpg") {
                                 $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
                             }
-                            // Обработать картинку!!!!!!!!!!!!!!!!!!!
+
                             echo '
 
                                 <tr>
@@ -113,12 +119,11 @@ if (!$_SESSION['user']) {
 
     </section>
 
-
+    <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
     <section>
-        <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
+
         <div class="popup-add">
-            <!-- Само белое модальное окно -->
-            <!-- содержмое модального окна -->
+
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
@@ -138,22 +143,23 @@ if (!$_SESSION['user']) {
                         </div>
                         <div>
                             <label>Паспорт:</label> <input type="file" name="pasport" />
-                            <div>
-                                <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
-                            </div>
-                            <div>
-                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
-                            </div>
-                            <div>
-                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
-                            </div>
-                            <div class="popup-add-subbtn">
-                                <input type="submit" class="add-btn" value="Добавить" />
-                            </div>
-                            <div class="popup-add-msg">
-                                <p class="gifload  none"></p>
-                                <p class="msg  none">LOrem</p>
-                            </div>
+                        </div>
+                        <div>
+                            <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
+                        </div>
+                        <div>
+                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
+                        </div>
+                        <div>
+                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
+                        </div>
+                        <div class="popup-add-subbtn">
+                            <input type="submit" class="add-btn" value="Добавить" />
+                        </div>
+                        <div class="popup-add-msg">
+                            <p class="gifload  none"></p>
+                            <p class="msg  none">LOrem</p>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -175,33 +181,33 @@ if (!$_SESSION['user']) {
                 <div id="form_order">
                     <form class="addform">
 
+
                         <div>
-                            <label>Наименование:</label> <input type="text" name="name" value="<?= $_SESSION["form_add"]["name"] ?>" />
+                            <label>Наименование:</label> <input type="text" name="name2" />
                         </div>
                         <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka" />
+                            <label>Тип,марка:</label> <input type="text" name="marka2" />
                         </div>
                         <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number" />
+                            <label>Заводской №:</label> <input type="text" name="zav_number2" />
+                        </div>
+
+                        <div>
+                            <label>Год выпуска:</label> <input type="date" name="dev_data_release2" />
                         </div>
                         <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport" />
-                            <div>
-                                <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
-                            </div>
-                            <div>
-                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
-                            </div>
-                            <div>
-                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
-                            </div>
-                            <div class="popup-select-subbtn">
-                                <input type="submit" class="select-btn" value="Выбрать" />
-                            </div>
-                            <div class="popup-select-msg">
-                                <p class="gifload  none"></p>
-                                <p class="msg  none">LOrem</p>
-                            </div>
+                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki2" />
+                        </div>
+                        <div>
+                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki2" />
+                        </div>
+                        <div class="popup-select-subbtn">
+                            <input type="submit" class="select-btn" value="Выбрать" />
+                        </div>
+                        <div class="popup-select-msg">
+                            <p class="gifload  none"></p>
+                            <p class="msg  none">LOrem</p>
+                        </div>
                     </form>
                 </div>
             </div>
