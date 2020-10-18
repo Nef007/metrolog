@@ -50,7 +50,7 @@ if (!$_SESSION['user']) {
                         Добавить
                     </button>
                     <button class="button popup-select-btn">
-                        Выборка
+                        Фильтр
                     </button>
                     <button class="button">
                         Выгрузить в Exel
@@ -176,7 +176,7 @@ if (!$_SESSION['user']) {
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
-                    Выборка
+                    Фильтр
                 </h4>
                 <div id="form_order">
                     <form class="addform">

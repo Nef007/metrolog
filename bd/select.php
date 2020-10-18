@@ -97,22 +97,67 @@ if (!empty($error_fields)) {
 // echo $_FILES['pasport'];
 
 
-function addWhere($where, $add, $and = true)
+function addWhere($where, $add, $and = true, $ferst = false)
 {
-    if ($where) {
+    if ($where && $ferst) {
+        $where = $add;
+    } elseif ($where) {
         if ($and) $where .= " AND $add";
         else $where .= " OR $add";
     } else $where = $add;
     return $where;
 }
+// Принимаем ИМЯ
 $search = explode(' ', $_POST['name']);
 
 $where = "";
+//если оно есть
 if ($search) {
+    $where = "(";
+    if (count($search) === 1) {
+        //  если оно одно 
+        $where .= addWhere($where, "`dev_name` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        $where .= ")";
+    } else {
+        // если их несколько
+        $where .= addWhere($where, "`dev_name` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        unset($search[0]);
+        foreach ($search as $name) {
 
-    foreach ($search as $name) {
+            $where = addWhere($where, "`dev_name` LIKE '%" . htmlspecialchars($name), false) . "%'";
+        }
 
-        $where = addWhere($where, "`dev_name` LIKE '%" . htmlspecialchars($name), false) . "%'";
+        $where .= ")";
+    }
+}
+
+// Принимаем марку
+
+
+$search = explode(' ', $_POST['marka']);
+
+
+//если оно есть
+if ($search) {
+    // и если имя есть
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    if (count($search) === 1) {
+        //  если оно одно 
+        $where .= addWhere($where, "`dev_marka` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        $where .= ")";
+    } else {
+        // если их несколько
+        $where .= addWhere($where, "`dev_marka` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        unset($search[0]);
+        foreach ($search as $name) {
+
+            $where = addWhere($where, "`dev_marka` LIKE '%" . htmlspecialchars($name), false) . "%'";
+        }
+
+        $where .= ")";
     }
 }
 
@@ -121,14 +166,10 @@ if ($search) {
 
 
 
-
-if ($_POST["marka"]) $where = addWhere($where, "`dev_marka` = '" . htmlspecialchars($_POST["marka"])) . "'";
-// if ($_POST["manufacturers"]) $where = addWhere($where, "`manufacturer` IN (".htmlspecialchars(implode(",", $_POST["manufacturers"])).")");
-// if ($_POST["wifi"]) $where = addWhere($where, "`wifi` = '1'");
 $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`,
-    `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and (";
+    `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and ";
 if ($where) {
-    $sql .= " $where )";
+    $sql .= "$where";
     $_SESSION['sql'] = $sql;
 } else {
 
