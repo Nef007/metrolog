@@ -36,8 +36,6 @@ $(".login-btn").click(function (e) {
   });
 });
 
-
-
 /*
     Получение аватарки с поля
  */
@@ -108,23 +106,29 @@ $(".add-btn").click(function (e) {
 $(".select-btn").click(function (e) {
   e.preventDefault();
 
- 
-
   $(`input`).removeClass("error");
 
   let name = $('input[name="name2"]').val(),
     marka = $('input[name="marka2"]').val(),
     zav_number = $('input[name="zav_number2"]').val(),
-    dev_data_release = $('input[name="dev_data_release2"]').val();
-  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki2"]').val();
+    dev_data_release_start = $('input[name="dev_data_release2_start"]').val();
+  dev_data_release_end = $('input[name="dev_data_release2_end"]').val();
+  dev_data_pred_poverki_start = $(
+    'input[name="dev_data_pred_poverki2_start"]'
+  ).val();
+  dev_data_pred_poverki_end = $(
+    'input[name="dev_data_pred_poverki2_end"]'
+  ).val();
   dev_data_poverki = $('input[name="dev_data_poverki2"]').val();
 
   let formData = new FormData();
   formData.append("name", name);
   formData.append("marka", marka);
   formData.append("zav_number", zav_number);
-  formData.append("dev_data_release", dev_data_release);
-  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
+  formData.append("dev_data_release_start", dev_data_release_start);
+  formData.append("dev_data_release_end", dev_data_release_end);
+  formData.append("dev_data_pred_poverki_start", dev_data_pred_poverki_start);
+  formData.append("dev_data_pred_poverki_end", dev_data_pred_poverki_end);
   formData.append("dev_data_poverki", dev_data_poverki);
 
   $.ajax({
@@ -140,7 +144,7 @@ $(".select-btn").click(function (e) {
       if (data.status) {
         $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
-       // $(".popup-select-btn").addClass("select-color");
+        // $(".popup-select-btn").addClass("select-color");
 
         document.location.href = "../profile.php";
       } else {

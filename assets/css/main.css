@@ -86,9 +86,6 @@ table th {
   left: 50%;
   text-align: left;
 }
-.popup-content input {
-  width: 60%;
-}
 .popup-form {
   margin-top: 3rem;
   padding: 0;
@@ -117,9 +114,14 @@ table th {
   display: none;
 }
 input {
+  width: 60%;
   border: unset;
   border-bottom: 2px solid #e3e3e3;
   outline: none;
+}
+.input-min {
+  width: 27%;
+  font-size: 12pt;
 }
 .select-color {
   background-color: #e3a103;

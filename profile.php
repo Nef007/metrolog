@@ -81,7 +81,7 @@ if (!$_SESSION['user']) {
                         <?php
 
                         if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
                         }
@@ -195,10 +195,16 @@ if (!$_SESSION['user']) {
                         </div>
 
                         <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release2" />
+                            <label>Год выпуска: </label>
+
+                            c<input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_start" />по
+                            <input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_end" />
+
+
                         </div>
                         <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki2" />
+                            <label>Дата поверки:</label> с<input class="input-min" type="date" name="dev_data_pred_poverki2_start" />по
+                            <input class="input-min" type="date" name="dev_data_pred_poverki2_end" />
                         </div>
                         <div>
                             <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki2" />

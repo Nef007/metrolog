@@ -5,8 +5,10 @@ unset($_SESSION["sql"]["sql"]);
 $name = $_POST['name'];
 $marka = $_POST['marka'];
 $zav_number = $_POST['zav_number'];
-$dev_data_release = $_POST['dev_data_release'];
-$dev_data_pred_poverki = $_POST['dev_data_pred_poverki'];
+$dev_data_release_start = $_POST['dev_data_release_start'];
+$dev_data_release_end = $_POST['dev_data_release_end'];
+$dev_data_pred_poverki_start = $_POST['dev_data_pred_poverki_start'];
+$dev_data_pred_poverki_end = $_POST['dev_data_pred_poverki_end'];
 $dev_data_poverki = $_POST['dev_data_poverki'];
 $distr_id = $_SESSION['user']['distr_id'];
 
@@ -17,57 +19,9 @@ $distr_id = $_SESSION['user']['distr_id'];
 
 
 
-// $check_zav_number = mysqli_query($connect, "SELECT * FROM `device` WHERE `dev_zav_number` = '$zav_number'");
-// if (mysqli_num_rows($check_zav_number) > 0) {
-//     $response = [
-//         "status" => false,
-//         "type" => 1,
-//         "message" => "Такой заводской номер уже существует",
-//         "fields" => ['zav_number']
-//     ];
-
-//     echo json_encode($response);
-//     die();
-// }
-
-
-
 $error_fields = [];
 
 
-// if ($name === '' && $marka === '' && $zav_number === '' && $dev_data_release === '' && $dev_data_pred_poverki === '' && $dev_data_poverki === '') {
-//     $error_fields[] = 'name';
-//     $error_fields[] = 'marka';
-//     $error_fields[] = 'zav_number';
-//     $error_fields[] = 'dev_data_release';
-//     $error_fields[] = 'dev_data_pred_poverki';
-//     $error_fields[] = 'dev_data_poverki';
-// }
-
-// if ($marka === '') {
-//     $error_fields[] = 'marka';
-// }
-
-// if ($zav_number === '') {
-//     $error_fields[] = 'zav_number';
-// }
-
-// if ($dev_data_release === '') {
-//     $error_fields[] = 'dev_data_release';
-// }
-
-// if ($dev_data_pred_poverki === '') {
-//     $error_fields[] = 'dev_data_pred_poverki';
-// }
-// if ($dev_data_poverki === '') {
-//     $error_fields[] = 'dev_data_poverki';
-// }
-
-// value="<?= $_SESSION["form_select"]["name_s"]
-
-// if (!$_FILES['pasport']) {
-//     $error_fields[] = 'pasport';
-// }
 
 if (!empty($error_fields)) {
     $response = [
@@ -83,18 +37,6 @@ if (!empty($error_fields)) {
 }
 
 
-
-// $path = 'uploads/' . time() . $_FILES['pasport']['name'];
-// if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
-//     $response = [
-//         "status" => false,
-//         "type" => 2,
-//         "message" => "Ошибка при загрузке аватарки",
-//     ];
-//     echo json_encode($response);
-// }
-
-// echo $_FILES['pasport'];
 
 
 function addWhere($where, $add, $and = true, $ferst = false)
@@ -161,13 +103,97 @@ if (!empty($_POST['marka'])) {
     }
 }
 
+// Принимаем заводской номер
+if (!empty($_POST['zav_number'])) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "`dev_zav_number` LIKE '%" . htmlspecialchars($zav_number), false, true) . "%'";
+
+    $where .= ")";
+}
+
+// принимаем год выпуска
+
+if ($dev_data_release_start && $dev_data_release_end) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "YEAR(dev_data_release) BETWEEN " . htmlspecialchars($dev_data_release_start) . " AND " . htmlspecialchars($dev_data_release_end), false, true) . "";
+
+    $where .= ")";
+} else {
+
+    if ($dev_data_release_start) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "YEAR(dev_data_release) >= " . htmlspecialchars($dev_data_release_start), false, true) . "";
+
+        $where .= ")";
+    }
+
+    if ($dev_data_release_end) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "YEAR(dev_data_release) <= " . htmlspecialchars($dev_data_release_end), false, true) . "";
+
+        $where .= ")";
+    }
+}
+
+// принимаем дату поверки
+
+if ($dev_data_pred_poverki_start && $dev_data_pred_poverki_end) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "dev_data_pred_poverki  BETWEEN '" . htmlspecialchars($dev_data_pred_poverki_start) . "' AND '" . htmlspecialchars($dev_data_pred_poverki_end), false, true) . "'";
+
+    $where .= ")";
+} else {
+
+    if ($dev_data_pred_poverki_start) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "dev_data_pred_poverki>= '" . htmlspecialchars($dev_data_pred_poverki_start), false, true) . "'";
+
+        $where .= ")";
+    }
+
+    if ($dev_data_pred_poverki_end) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "dev_data_pred_poverki <= '" . htmlspecialchars($dev_data_pred_poverki_end), false, true) . "'";
+
+        $where .= ")";
+    }
+}
 
 
 
 
 
-$sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`,
-    `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and ";
+
+$sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`,
+    `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and ";
 if ($where) {
     $sql .= "$where";
     $_SESSION['sql'] = [
@@ -177,7 +203,7 @@ if ($where) {
 } else {
 
     $_SESSION['sql'] = [
-        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_pred_poverki`, `dev_data_release`,`dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id",
+        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id",
         "btn" => false,
     ];
 }
