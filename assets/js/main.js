@@ -189,3 +189,95 @@ $(".clean-btn").click(function (e) {
     },
   });
 });
+
+// изменение устройства
+
+$(".change-btn").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  let name = $('input[name="name3"]').val(),
+    dev_id = $('input[name="dev_id"]').val(),
+    marka = $('input[name="marka3"]').val(),
+    zav_number = $('input[name="zav_number3"]').val(),
+    dev_data_release = $('input[name="dev_data_release3"]').val();
+  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki3"]').val();
+  dev_data_poverki = $('input[name="dev_data_poverki3"]').val();
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+  formData.append("name", name);
+  formData.append("marka", marka);
+  formData.append("zav_number", zav_number);
+  formData.append("pasport", pasport);
+  formData.append("dev_data_release", dev_data_release);
+  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
+  formData.append("dev_data_poverki", dev_data_poverki);
+
+  $.ajax({
+    url: "../../bd/change.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../profile.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+// удаление картинки
+
+$(".del-btn").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  dev_id = $('input[name="dev_id"]').val();
+  href1 = document.getElementById("seatch_bt").getAttribute("href");
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+  formData.append("href", href1);
+
+  $.ajax({
+    url: "../../bd/del.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../profile.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});

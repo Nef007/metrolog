@@ -2,6 +2,7 @@
 session_start();
 require_once 'vendor/connect.php';
 require_once 'vendor/functions.php';
+
 if (!$_SESSION['user']) {
     header('Location: /');
 }
@@ -76,6 +77,7 @@ if (!$_SESSION['user']) {
                             <th>год выпуска</th>
                             <th>Дата поверки</th>
                             <th>Дата следующей поверки</th>
+
                         </tr>
 
                         <?php
@@ -90,15 +92,18 @@ if (!$_SESSION['user']) {
                         foreach ($devices as $device) {
 
                             if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                                $img = $device[7];
+                                $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
                             } elseif (!empty($device[7]) && getExtension($device[7]) === "jpg") {
+                                $img = $device[7];
                                 $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
-                            }
+                            } else $img = "1";
 
                             echo '
 
                                  <tr> 
 
+                                    
                                     <td>' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
@@ -106,6 +111,8 @@ if (!$_SESSION['user']) {
                                     <td>' . $device[4] . '</td>
                                     <td>' . $device[5] . '</td>
                                     <td>' . $device[6] . '</td>
+                                    <td class="col_id">' . $device[0] . '</td>
+                                    <td class="col_id">' . $img . '</td>
 
 
                                    </tr>
@@ -243,6 +250,9 @@ if (!$_SESSION['user']) {
 
 
                         <div>
+                            <input type="hidden" name="dev_id" id="dev_id" />
+                        </div>
+                        <div>
                             <label>Наименование:</label> <input type="text" name="name3" id="name" />
                         </div>
                         <div>
@@ -252,7 +262,20 @@ if (!$_SESSION['user']) {
                             <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
                         </div>
                         <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport3" />
+                            <label>Паспорт:</label>
+
+
+
+                            <input class="vibor" type="file" name="pasport" />
+                            <div class="per"> <a id="seatch_bt" href="" target="_blank">
+                                    <img src="assets\img\file.png" width="50"></a>
+                                <img class="del-btn" src="assets\img\del.png" width="50">
+
+                            </div>
+
+
+
+
                         </div>
                         <div>
                             <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
@@ -264,7 +287,7 @@ if (!$_SESSION['user']) {
                             <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
                         </div>
                         <div class="popup-add-subbtn">
-                            <input type="submit" class="add-btn" value="Добавить" />
+                            <input type="submit" class="change-btn" value="Сохранить" />
                         </div>
                         <div class="popup-add-msg">
                             <p class="gifload  none"></p>
@@ -311,15 +334,35 @@ if (!$_SESSION['user']) {
                 let name = $(this).children('td:first-child').text();
                 let marka = $(this).children('td:nth-child(2)').text();
                 let zav_number = $(this).children('td:nth-child(3)').text();
+
                 let dev_data_release3 = $(this).children('td:nth-child(5)').text();
                 let dev_data_pred_poverki3 = $(this).children('td:nth-child(6)').text();
                 let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
+                let dev_id = $(this).children('td:nth-child(8)').text();
+                pasport = $(this).children('td:nth-child(9)').text();
                 $('#name').val(name);
                 $('#marka').val(marka);
                 $('#zav_number').val(zav_number);
+                $('#pasport').val(pasport);
                 $('#dev_data_release3').val(dev_data_release3);
                 $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
                 $('#dev_data_poverki3').val(dev_data_poverki3);
+                $('#dev_id').val(dev_id);
+
+                document.getElementById('seatch_bt').href = pasport;
+                if (pasport === "1") {
+                    $(".per").removeClass("del");
+                    $(".vibor").removeClass("none");
+                    $(".per").addClass("none");
+
+
+                } else {
+                    $(".vibor").addClass("none");
+                    $(".per").removeClass("none");
+                    $(".per").addClass("del");
+
+                }
+
 
 
             });
