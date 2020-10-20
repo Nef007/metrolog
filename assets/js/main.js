@@ -119,7 +119,8 @@ $(".select-btn").click(function (e) {
   dev_data_pred_poverki_end = $(
     'input[name="dev_data_pred_poverki2_end"]'
   ).val();
-  dev_data_poverki = $('input[name="dev_data_poverki2"]').val();
+  dev_data_poverki_start = $('input[name="dev_data_poverki2_start"]').val();
+  dev_data_poverki_end = $('input[name="dev_data_poverki2_end"]').val();
 
   let formData = new FormData();
   formData.append("name", name);
@@ -129,7 +130,8 @@ $(".select-btn").click(function (e) {
   formData.append("dev_data_release_end", dev_data_release_end);
   formData.append("dev_data_pred_poverki_start", dev_data_pred_poverki_start);
   formData.append("dev_data_pred_poverki_end", dev_data_pred_poverki_end);
-  formData.append("dev_data_poverki", dev_data_poverki);
+  formData.append("dev_data_poverki_start", dev_data_poverki_start);
+  formData.append("dev_data_poverki_end", dev_data_poverki_end);
 
   $.ajax({
     url: "bd/select.php",
@@ -155,6 +157,34 @@ $(".select-btn").click(function (e) {
         }
         $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+//чистка названий
+
+$(".clean-btn").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  $.ajax({
+    url: "../../vendor/reset.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+
+        $('form input[type="text"]').val("");
+        // document.getElementById("myForm").reset();
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../profile.php";
       }
     },
   });

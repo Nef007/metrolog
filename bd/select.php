@@ -9,12 +9,22 @@ $dev_data_release_start = $_POST['dev_data_release_start'];
 $dev_data_release_end = $_POST['dev_data_release_end'];
 $dev_data_pred_poverki_start = $_POST['dev_data_pred_poverki_start'];
 $dev_data_pred_poverki_end = $_POST['dev_data_pred_poverki_end'];
-$dev_data_poverki = $_POST['dev_data_poverki'];
+$dev_data_poverki_start = $_POST['dev_data_poverki_start'];
+$dev_data_poverki_end = $_POST['dev_data_poverki_end'];
 $distr_id = $_SESSION['user']['distr_id'];
 
-//  $_SESSION['form_select'] = [
-//      "name_s" => $name,
-//  ];
+  $_SESSION['form_select'] = [
+     "name" => $name,
+     "marka" => $marka,
+     "zav_number" => $zav_number,
+     "dev_data_release_start" => $dev_data_release_start,
+     "dev_data_release_end" => $dev_data_release_end,
+     "dev_data_pred_poverki_start" => $dev_data_pred_poverki_start,
+     "dev_data_pred_poverki_end" => $dev_data_pred_poverki_end,
+     "dev_data_poverki_start" => $dev_data_poverki_start,
+     "dev_data_poverki_end" => $dev_data_poverki_end,
+     
+  ];
 
 
 
@@ -186,6 +196,44 @@ if ($dev_data_pred_poverki_start && $dev_data_pred_poverki_end) {
         $where .= ")";
     }
 }
+
+// принимаем дату следующей  поверки
+
+if ($dev_data_poverki_start && $dev_data_poverki_end) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "dev_data_poverki  BETWEEN '" . htmlspecialchars($dev_data_poverki_start) . "' AND '" . htmlspecialchars($dev_data_poverki_end), false, true) . "'";
+
+    $where .= ")";
+} else {
+
+    if ($dev_data_poverki_start) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "dev_data_poverki >= '" . htmlspecialchars($dev_data_poverki_start), false, true) . "'";
+
+        $where .= ")";
+    }
+
+    if ($dev_data_poverki_end) {
+
+        if ($where) {
+            $where .= "AND (";
+        } else $where = "(";
+
+        $where .= addWhere($where, "dev_data_poverki <= '" . htmlspecialchars($dev_data_poverki_end), false, true) . "'";
+
+        $where .= ")";
+    }
+}
+
+
 
 
 
