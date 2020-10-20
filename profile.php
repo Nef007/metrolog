@@ -97,7 +97,7 @@ if (!$_SESSION['user']) {
 
                             echo '
 
-                                <tr>
+                                 <tr> 
 
                                     <td>' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
@@ -108,7 +108,7 @@ if (!$_SESSION['user']) {
                                     <td>' . $device[6] . '</td>
 
 
-                            </tr>
+                                   </tr>
                                 ';
                         }
 
@@ -181,7 +181,7 @@ if (!$_SESSION['user']) {
                     Фильтр
                 </h4>
                 <div id="form_order">
-                    <form id="myForm" class="addform">
+                    <form class="addform">
 
 
                         <div>
@@ -227,6 +227,55 @@ if (!$_SESSION['user']) {
 
     </section>
 
+    <!-- Модальное окно Изменить -->
+
+    <section>
+        <div class="popup-change">
+
+
+            <div class="popup-content">
+                <button class="popup-close">&times;</button>
+                <h4 class="popup-header">
+                    Изменить
+                </h4>
+                <div id="form_order">
+                    <form class="addform">
+
+
+                        <div>
+                            <label>Наименование:</label> <input type="text" name="name3" id="name" />
+                        </div>
+                        <div>
+                            <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" />
+                        </div>
+                        <div>
+                            <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
+                        </div>
+                        <div>
+                            <label>Паспорт:</label> <input type="file" name="pasport3" />
+                        </div>
+                        <div>
+                            <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
+                        </div>
+                        <div>
+                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki3" id="dev_data_pred_poverki3" />
+                        </div>
+                        <div>
+                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
+                        </div>
+                        <div class="popup-add-subbtn">
+                            <input type="submit" class="add-btn" value="Добавить" />
+                        </div>
+                        <div class="popup-add-msg">
+                            <p class="gifload  none"></p>
+                            <p class="msg  none">LOrem</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
 
 
@@ -254,11 +303,33 @@ if (!$_SESSION['user']) {
                 $(`input`).removeClass("error");
 
             });
+            $("tr").on("dblclick", function() {
+                $(".popup-change").fadeIn();
+                $(".msg").addClass("none");
+                $(`input`).removeClass("error");
+
+                let name = $(this).children('td:first-child').text();
+                let marka = $(this).children('td:nth-child(2)').text();
+                let zav_number = $(this).children('td:nth-child(3)').text();
+                let dev_data_release3 = $(this).children('td:nth-child(5)').text();
+                let dev_data_pred_poverki3 = $(this).children('td:nth-child(6)').text();
+                let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
+                $('#name').val(name);
+                $('#marka').val(marka);
+                $('#zav_number').val(zav_number);
+                $('#dev_data_release3').val(dev_data_release3);
+                $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
+                $('#dev_data_poverki3').val(dev_data_poverki3);
+
+
+            });
+
 
 
             $(".popup-close").on("click", function() {
                 $(".popup-add").fadeOut();
                 $(".popup-select").fadeOut();
+                $(".popup-change").fadeOut();
             });
 
         });
