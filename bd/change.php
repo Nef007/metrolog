@@ -55,9 +55,7 @@ if ($dev_data_poverki === '') {
     $error_fields[] = 'dev_data_poverki';
 }
 
-// if (!$_FILES['pasport']) {
-//     $error_fields[] = 'pasport';
-// }
+
 
 if (!empty($error_fields)) {
     $response = [
@@ -73,15 +71,7 @@ if (!empty($error_fields)) {
 }
 
 
-$path = 'uploads/' . time() . $_FILES['pasport']['name'];
-if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
-    $response = [
-        "status" => false,
-        "type" => 2,
-        "message" => "Ошибка при загрузке аватарки",
-    ];
-    echo json_encode($response);
-}
+
 
 
 
@@ -98,8 +88,25 @@ if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
 // echo $_FILES['pasport'];
 
 
+if ($_FILES['pasport']) {
+    $path = 'uploads/' . time() . $_FILES['pasport']['name'];
+    if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+        $response = [
+            "status" => false,
+            "type" => 2,
+            "message" => "Ошибка при загрузке аватарки",
+        ];
+        echo json_encode($response);
 
-mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id");
+        die();
+    }
+
+
+    mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id");
+} else mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki' WHERE `id`=$dev_id");
+
+
+
 
 
 $response = [

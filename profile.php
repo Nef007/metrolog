@@ -55,7 +55,8 @@ if (!$_SESSION['user']) {
                                                             ?>">
                         Фильтр
                     </button>
-                    <button class="button">
+
+                    <button class="button loadexel">
                         Выгрузить в Exel
                     </button>
                 </div>
@@ -68,17 +69,19 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <table>
-                        <tr>
-                            <th>Наименование</th>
-                            <th>Тип,марка</th>
-                            <th>Заводской номер</th>
-                            <th>Паспорт</th>
-                            <th>год выпуска</th>
-                            <th>Дата поверки</th>
-                            <th>Дата следующей поверки</th>
+                    <table id="tableexl">
+                        <thead>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Тип,марка</th>
+                                <th>Заводской номер</th>
+                                <th>Паспорт</th>
+                                <th>год выпуска</th>
+                                <th>Дата поверки</th>
+                                <th>Дата следующей поверки</th>
 
-                        </tr>
+                            </tr>
+                        </thead>
 
                         <?php
 
@@ -111,8 +114,8 @@ if (!$_SESSION['user']) {
                                     <td>' . $device[4] . '</td>
                                     <td>' . $device[5] . '</td>
                                     <td>' . $device[6] . '</td>
-                                    <td class="col_id">' . $device[0] . '</td>
-                                    <td class="col_id">' . $img . '</td>
+                                    <td class="col_id noExl">' . $device[0] . '</td>
+                                    <td class="col_id noExl">' . $img . '</td>
 
 
                                    </tr>
@@ -127,6 +130,8 @@ if (!$_SESSION['user']) {
         </div>
 
     </section>
+
+
 
     <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
     <section>
@@ -306,6 +311,7 @@ if (!$_SESSION['user']) {
     <!-- подключение jqweri -->
     <script src="assets/js/jquery-3.4.1.min.js"></script>
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/jquery.table2excel.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
 
     <script>
@@ -375,6 +381,22 @@ if (!$_SESSION['user']) {
                 $(".popup-change").fadeOut();
             });
 
+
+            $('.loadexel').click(function() {
+                $('#tableexl').table2excel({
+                    exclude: ".noExl",
+                    name: "SI",
+                    filename: "Выгрузка_в_Exel.xls",
+                    fileext: ".xls", //File extension type 
+                    exclude_img: true,
+                    exclude_links: true,
+                    exclude_inputs: true,
+
+
+                });
+
+
+            });
         });
     </script>
     <!-- Конец модального окна -->
