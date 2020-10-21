@@ -9,6 +9,8 @@ $dev_data_release = $_POST['dev_data_release'];
 $dev_data_pred_poverki = $_POST['dev_data_pred_poverki'];
 $dev_data_poverki = $_POST['dev_data_poverki'];
 $distr_id = $_SESSION['user']['distr_id'];
+$pasport = $_FILES['pasport']['name'];
+
 
 // $_SESSION['form_select'] = [
 //     "name_s" => $name,
@@ -58,9 +60,7 @@ if ($dev_data_poverki === '') {
     $error_fields[] = 'dev_data_poverki';
 }
 
-if (!$_FILES['pasport']) {
-    $error_fields[] = 'pasport';
-}
+
 
 if (!empty($error_fields)) {
     $response = [
@@ -75,28 +75,72 @@ if (!empty($error_fields)) {
     die();
 }
 
+$ext = pathinfo($_FILES['pasport']['name'], PATHINFO_EXTENSION);
+
+if ($_FILES['pasport']) {
+
+    if ($ext === "pdf" || $ext === "jpg" || $ext === "png") {
+        $path = 'uploads/' . time() . $_FILES['pasport']['name'];
+        if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+            $response = [
+                "status" => false,
+                "type" => 2,
+                "message" => "Ошибка при загрузке файла",
+            ];
+            echo json_encode($response);
+        }
+
+        if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
+VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$path')")) {
 
 
-$path = 'uploads/' . time() . $_FILES['pasport']['name'];
-if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
-    $response = [
-        "status" => false,
-        "type" => 2,
-        "message" => "Ошибка при загрузке аватарки",
-    ];
-    echo json_encode($response);
+
+            $response = [
+                "status" => true,
+                "message" => "Добавлеение успешно!",
+            ];
+            echo json_encode($response);
+
+            die();
+        } else {
+            $response = [
+                "status" => false,
+                "type" => 2,
+                "message" => "Данные некорректны",
+            ];
+            echo json_encode($response);
+        }
+    } else {
+        $error_fields[] = 'pasport';
+        $response = [
+            "status" => false,
+            "type" => 1,
+            "message" => "Неверный формат(jpg,png,pdf)",
+            "fields" => $error_fields,
+
+        ];
+        echo json_encode($response);
+    }
+} else {
+
+    if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
+VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', NULL)")) {
+
+
+
+        $response = [
+            "status" => true,
+            "message" => "Добавлеение успешно!",
+        ];
+        echo json_encode($response);
+    } else {
+        $response = [
+            "status" => false,
+            "type" => 2,
+            "message" => "Данные некорректны",
+        ];
+        echo json_encode($response);
+    }
 }
 
-// echo $_FILES['pasport'];
 
-
-
-mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
-VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$path')");
-
-
-$response = [
-    "status" => true,
-    "message" => "Добавлеение успешно!",
-];
-echo json_encode($response);

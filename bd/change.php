@@ -86,31 +86,71 @@ if (!empty($error_fields)) {
 // }
 
 // echo $_FILES['pasport'];
-
+$ext = pathinfo($_FILES['pasport']['name'], PATHINFO_EXTENSION);
 
 if ($_FILES['pasport']) {
-    $path = 'uploads/' . time() . $_FILES['pasport']['name'];
-    if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+
+    if ($ext === "pdf" || $ext === "jpg" || $ext === "png") {
+        $path = 'uploads/' . time() . $_FILES['pasport']['name'];
+        if (!move_uploaded_file($_FILES['pasport']['tmp_name'], '../' . $path)) {
+            $response = [
+                "status" => false,
+                "type" => 2,
+                "message" => "Ошибка при загрузке файла",
+            ];
+            echo json_encode($response);
+        }
+
+        if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id")) {
+
+
+
+
+            $response = [
+                "status" => true,
+                "message" => "Изменение успешно!",
+            ];
+            echo json_encode($response);
+
+            die();
+        } else {
+            $response = [
+                "status" => false,
+                "type" => 2,
+                "message" => "Данные некорректны",
+            ];
+            echo json_encode($response);
+        }
+    } else {
+        $error_fields[] = 'pasport';
+        $response = [
+            "status" => false,
+            "type" => 1,
+            "message" => "Неверный формат(jpg,png,pdf)",
+            "fields" => $error_fields,
+
+        ];
+        echo json_encode($response);
+    }
+} else {
+
+    if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki' WHERE `id`=$dev_id")) {
+
+
+
+
+
+        $response = [
+            "status" => true,
+            "message" => "Изменение успешно!",
+        ];
+        echo json_encode($response);
+    } else {
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => "Ошибка при загрузке аватарки",
+            "message" => "Данные некорректны",
         ];
         echo json_encode($response);
-
-        die();
     }
-
-
-    mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id");
-} else mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki' WHERE `id`=$dev_id");
-
-
-
-
-
-$response = [
-    "status" => true,
-    "message" => "Сохранение успешно!",
-];
-echo json_encode($response);
+}

@@ -75,10 +75,11 @@ if (!$_SESSION['user']) {
                                 <th>Наименование</th>
                                 <th>Тип,марка</th>
                                 <th>Заводской номер</th>
-                                <th>Паспорт</th>
+                                <th class="noExl">Паспорт</th>
                                 <th>год выпуска</th>
                                 <th>Дата поверки</th>
                                 <th>Дата следующей поверки</th>
+                               
 
                             </tr>
                         </thead>
@@ -97,7 +98,7 @@ if (!$_SESSION['user']) {
                             if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
                                 $img = $device[7];
                                 $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                            } elseif (!empty($device[7]) && getExtension($device[7]) === "jpg") {
+                            } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
                                 $img = $device[7];
                                 $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
                             } else $img = "1";
@@ -110,7 +111,7 @@ if (!$_SESSION['user']) {
                                     <td>' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
-                                    <td>' . $device[7] . '</td>
+                                    <td class="noExl"> ' . $device[7] . '</td>
                                     <td>' . $device[4] . '</td>
                                     <td>' . $device[5] . '</td>
                                     <td>' . $device[6] . '</td>
