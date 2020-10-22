@@ -241,7 +241,7 @@ $(".change-btn").click(function (e) {
     },
   });
 });
-// удаление картинки
+// удаление паспорта
 
 $(".del-btn").click(function (e) {
   e.preventDefault();
@@ -257,6 +257,98 @@ $(".del-btn").click(function (e) {
 
   $.ajax({
     url: "../../bd/del.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../profile.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+  // списание устройства
+
+  // получение картинки
+  let akt = false;
+
+$('input[name="akt"]').change(function (e) {
+  akt = e.target.files[0];
+});
+$(".spisat-btn").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  let status = $('input[name="status]').val();
+  dev_id = $('input[name="dev_id"]').val();
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+  formData.append("status", status);
+  formData.append("akt", akt);
+
+
+
+  $.ajax({
+    url: "../../bd/spisat.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../profile.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+
+// удаление акта списания
+
+$(".del-btn").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  dev_id = $('input[name="dev_id"]').val();
+  href1 = document.getElementById("akt_bt").getAttribute("href");
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+  formData.append("href", href1);
+
+  $.ajax({
+    url: "../../bd/del_akt.php",
     type: "POST",
     dataType: "json",
     processData: false,

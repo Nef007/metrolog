@@ -87,7 +87,7 @@ if (!$_SESSION['user']) {
                         <?php
 
                         if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
                         }
@@ -117,6 +117,8 @@ if (!$_SESSION['user']) {
                                     <td>' . $device[6] . '</td>
                                     <td class="col_id noExl">' . $device[0] . '</td>
                                     <td class="col_id noExl">' . $img . '</td>
+                                    <td class="col_id noExl">' . $device[8] . '</td>
+                                    <td class="col_id noExl">' . $device[9] . '</td>
 
 
                                    </tr>
@@ -224,7 +226,7 @@ if (!$_SESSION['user']) {
                             <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
                         </div>
                         <div class="popup-select-subbtn">
-                            <input type="submit" class="select-btn" value="Выбрать" />
+                            <input type="submit" class="select-btn" value="Применить" />
                         </div>
                         <div class="popup-select-subbtn">
                             <input type="submit" class="clean-btn" value="Сбросить" />
@@ -315,11 +317,27 @@ if (!$_SESSION['user']) {
                             </div>
                         </form>
 
-
-
                     </div>
                     <div class="tab-pane fade" id="characteristics">
                         <form class="addform">
+
+                            <label>АКТ списания:</label>
+                            <input class="vibor1" type="file" name="akt" />
+                            <div class="per1"> <a id="akt_bt" href="" target="_blank">
+                                    <img src="assets\img\file.png" width="50"></a>
+                                <img class="del-btn" src="assets\img\del.png" width="20">
+
+                            </div>
+
+                            <label>Статус:</label> <input type="text" name="status" id="status" />
+
+                            <div class="popup-spisat-subbtn">
+                                <input type="submit" class="spisat-btn" value="Списать" />
+                            </div>
+                            <div class="popup-add-msg">
+                                <p class="gifload  none"></p>
+                                <p class="msg  none">LOrem</p>
+                            </div>
 
                         </form>
                     </div>
@@ -376,6 +394,8 @@ if (!$_SESSION['user']) {
                 let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
                 let dev_id = $(this).children('td:nth-child(8)').text();
                 pasport = $(this).children('td:nth-child(9)').text();
+                let status = $(this).children('td:nth-child(10)').text();
+                let akt = $(this).children('td:nth-child(11)').text();
                 $('#name').val(name);
                 $('#marka').val(marka);
                 $('#zav_number').val(zav_number);
@@ -384,7 +404,22 @@ if (!$_SESSION['user']) {
                 $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
                 $('#dev_data_poverki3').val(dev_data_poverki3);
                 $('#dev_id').val(dev_id);
+                $('#status').val(getstringstatus(status));
 
+
+                function getstringstatus($num) {
+                    if ($num === "") {
+                        $status = "В работе"
+                    }
+                    if ($num === "1") {
+                        $status = "На подтверждении"
+                    }
+                    if ($num === "3") {
+                        $status = "Списан"
+                    }
+                    return $status;
+                }
+                // Обработка поля загрузки файла паспорта
                 document.getElementById('seatch_bt').href = pasport;
                 if (pasport === "1") {
                     $(".per").removeClass("del");
@@ -396,6 +431,20 @@ if (!$_SESSION['user']) {
                     $(".vibor").addClass("none");
                     $(".per").removeClass("none");
                     $(".per").addClass("del");
+
+                }
+                // Обработка поля загрузки файла списания
+                document.getElementById('akt_bt').href = akt;
+                if (akt === "") {
+                    $(".per1").removeClass("del");
+                    $(".vibor1").removeClass("none");
+                    $(".per1").addClass("none");
+
+
+                } else {
+                    $(".vibor1").addClass("none");
+                    $(".per1").removeClass("none");
+                    $(".per1").addClass("del");
 
                 }
 
