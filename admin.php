@@ -37,7 +37,7 @@ if (!$_SESSION['user']) {
             </div>
             <div class="row">
                 <div class="col-lg-12 ">
-                    <h1> <?php echo $_SESSION['user']['distr']; ?> </h1>
+                    <h1>Панель управления </h1>
                 </div>
             </div>
         </div>
@@ -69,7 +69,8 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <table id="tableexl">
+                    <br id="all1" />
+                    <table class="demotable id=" tableexl">
                         <thead>
                             <tr>
                                 <th>Наименование</th>
@@ -79,36 +80,66 @@ if (!$_SESSION['user']) {
                                 <th>год выпуска</th>
                                 <th>Дата поверки</th>
                                 <th>Дата следующей поверки</th>
+                                <th>ФИФ</th>
+                                <th>Приказ</th>
+                                <th>ТО</th>
 
 
                             </tr>
                         </thead>
 
+
+
                         <?php
 
                         if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
+                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users`";
+                            $sql2 = "SELECT DISTINCT `distr_id`,`distr` FROM `users`";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
                         }
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
-                        foreach ($devices as $device) {
-                            // getExtension  подключенная функция
-                            if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                            } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
-                            } else $img = "1";
 
-                            echo '
+                        $users = mysqli_query($connect,  $sql2);
+                        $users = mysqli_fetch_all($users);
 
-                                 <tr id="tbody"> 
+                        foreach ($users as $user) {  ?>
+
+
+                            <tr>
+
+
+                                <td colspan="10"><a href="#close">свернуть</a><a href="#all1">развернуть</a>
+                                    <?= $user[1] ?>
+
+                                </td>
+                            </tr>
+
+
+
+
+
+                        <?php
+                            foreach ($devices as $device) {
+
+                                if ($device[13] == $user[0]) {
+                                    // getExtension  подключенная функция
+                                    if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
+                                        $img = $device[7];
+                                        $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                                    } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
+                                        $img = $device[7];
+                                        $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
+                                    } else $img = "1";
+
+                                    echo '
+
+
+                                 <tr  id="tbody"> 
 
                                     
-                                    <td style="cursor: pointer;">' . $device[1] . '</td>
+                                 <td style="cursor: pointer;">  ' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
                                     <td class="noExl"> ' . $device[7] . '</td>
@@ -119,13 +150,20 @@ if (!$_SESSION['user']) {
                                     <td class="col_id noExl">' . $img . '</td>
                                     <td class="col_id noExl">' . $device[8] . '</td>
                                     <td class="col_id noExl">' . $device[9] . '</td>
+                                    <td ">' . $device[10] . '</td>
+                                    <td ">' . $device[11] . '</td>
+                                    <td ">' . $device[12] . '</td>
 
 
                                    </tr>
                                 ';
+                                }
+                            }
                         }
 
                         ?>
+
+
 
                     </table>
                 </div>

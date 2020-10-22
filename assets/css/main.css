@@ -122,7 +122,7 @@ table th {
 .col_id {
   display: none;
 }
-input {
+.addform input {
   width: 60%;
   border: unset;
   border-bottom: 2px solid #e3e3e3;
@@ -141,4 +141,36 @@ input {
 }
 img {
   vertical-align: top;
+}
+/* у таблицы может быть любой класс или id */
+.demotable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+.demotable thead {
+  font-size: small;
+  text-align: right;
+}
+.demotable tbody td,
+.demotable tbody th {
+  border: 1px groove #e1d188;
+}
+.demotable tbody tr:nth-of-type(1) th {
+  background: #fff5d7;
+}
+.demotable a[href^="#all"],
+.demotable a[href="#close"] {
+  text-decoration: none;
+  border-bottom: 1px dashed;
+}
+/* здесь вся магия, если браузер не поддерживает структурные псевдоклассы, то список будет раскрыт, т.е. доступ к данным сохранится */
+[id^="all"] {
+  position: fixed;
+  /* чтобы страница "не подпрыгивала" к id */
+}
+[id^="all"]:target + table a[href^="#all"],
+[id^="all"]:not(:target) + table tbody tr:nth-of-type(n+2),
+[id^="all"]:not(:target) + table a[href="#close"] {
+  display: none;
 }
