@@ -79,7 +79,7 @@ if (!$_SESSION['user']) {
                                 <th>год выпуска</th>
                                 <th>Дата поверки</th>
                                 <th>Дата следующей поверки</th>
-                               
+
 
                             </tr>
                         </thead>
@@ -94,7 +94,7 @@ if (!$_SESSION['user']) {
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
                         foreach ($devices as $device) {
-
+                            // getExtension  подключенная функция
                             if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
                                 $img = $device[7];
                                 $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
@@ -105,10 +105,10 @@ if (!$_SESSION['user']) {
 
                             echo '
 
-                                 <tr> 
+                                 <tr id="tbody"> 
 
                                     
-                                    <td>' . $device[1] . '</td>
+                                    <td style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
                                     <td class="noExl"> ' . $device[7] . '</td>
@@ -249,58 +249,86 @@ if (!$_SESSION['user']) {
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
-                    Изменить
+                    Свойства
                 </h4>
-                <div id="form_order">
-                    <form class="addform">
+
+                <!-- Навигация вкладки -->
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#description">Изменение</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#characteristics">Списание</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="description">
 
 
-                        <div>
-                            <input type="hidden" name="dev_id" id="dev_id" />
-                        </div>
-                        <div>
-                            <label>Наименование:</label> <input type="text" name="name3" id="name" />
-                        </div>
-                        <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" />
-                        </div>
-                        <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
-                        </div>
-                        <div>
-                            <label>Паспорт:</label>
+                        <form class="addform">
+
+
+                            <div>
+                                <input type="hidden" name="dev_id" id="dev_id" />
+                            </div>
+                            <div>
+                                <label>Наименование:</label> <input type="text" name="name3" id="name" />
+                            </div>
+                            <div>
+                                <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" />
+                            </div>
+                            <div>
+                                <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
+                            </div>
+                            <div>
+                                <label>Паспорт:</label>
 
 
 
-                            <input class="vibor" type="file" name="pasport" />
-                            <div class="per"> <a id="seatch_bt" href="" target="_blank">
-                                    <img src="assets\img\file.png" width="50"></a>
-                                <img class="del-btn" src="assets\img\del.png" width="50">
+                                <input class="vibor" type="file" name="pasport" />
+                                <div class="per"> <a id="seatch_bt" href="" target="_blank">
+                                        <img src="assets\img\file.png" width="50"></a>
+                                    <img class="del-btn" src="assets\img\del.png" width="20">
+
+                                </div>
+
+
+
 
                             </div>
+                            <div>
+                                <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
+                            </div>
+                            <div>
+                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki3" id="dev_data_pred_poverki3" />
+                            </div>
+                            <div>
+                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
+                            </div>
+                            <div class="popup-add-subbtn">
+                                <input type="submit" class="change-btn" value="Сохранить" />
+                            </div>
+                            <div class="popup-add-msg">
+                                <p class="gifload  none"></p>
+                                <p class="msg  none">LOrem</p>
+                            </div>
+                        </form>
 
 
 
+                    </div>
+                    <div class="tab-pane fade" id="characteristics">
+                        <form class="addform">
 
-                        </div>
-                        <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
-                        </div>
-                        <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki3" id="dev_data_pred_poverki3" />
-                        </div>
-                        <div>
-                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
-                        </div>
-                        <div class="popup-add-subbtn">
-                            <input type="submit" class="change-btn" value="Сохранить" />
-                        </div>
-                        <div class="popup-add-msg">
-                            <p class="gifload  none"></p>
-                            <p class="msg  none">LOrem</p>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+
                 </div>
+
+
+
+
             </div>
         </div>
     </section>
@@ -310,9 +338,10 @@ if (!$_SESSION['user']) {
 
 
     <!-- подключение jqweri -->
-    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.table2excel.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script> -->
 
     <script>
@@ -333,7 +362,7 @@ if (!$_SESSION['user']) {
                 $(`input`).removeClass("error");
 
             });
-            $("tr").on("dblclick", function() {
+            $("tr#tbody").on("dblclick", function() {
                 $(".popup-change").fadeIn();
                 $(".msg").addClass("none");
                 $(`input`).removeClass("error");

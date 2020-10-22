@@ -33,26 +33,26 @@ $error_fields = [];
 
 
 if ($name === '') {
-    $error_fields[] = 'name';
+    $error_fields[] = 'name3';
 }
 
 if ($marka === '') {
-    $error_fields[] = 'marka';
+    $error_fields[] = 'marka3';
 }
 
 if ($zav_number === '') {
-    $error_fields[] = 'zav_number';
+    $error_fields[] = 'zav_number3';
 }
 
 if ($dev_data_release === '') {
-    $error_fields[] = 'dev_data_release';
+    $error_fields[] = 'dev_data_release3';
 }
 
 if ($dev_data_pred_poverki === '') {
-    $error_fields[] = 'dev_data_pred_poverki';
+    $error_fields[] = 'dev_data_pred_poverki3';
 }
 if ($dev_data_poverki === '') {
-    $error_fields[] = 'dev_data_poverki';
+    $error_fields[] = 'dev_data_poverki3';
 }
 
 
