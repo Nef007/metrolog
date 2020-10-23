@@ -3,11 +3,9 @@ session_start();
 require_once 'vendor/connect.php';
 require_once 'vendor/functions.php';
 
-if (!$_SESSION['user']) {
+if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
     header('Location: /');
 }
-
-
 ?>
 
 <!doctype html>
@@ -30,18 +28,29 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
+                    <h1>Панель управления </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-1 offset-lg-9 ">
+                    <div class="logout">
+                        <a href="admin.php">Главная</a>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="logout">
+                        <a href="users.php">Пользователи</a>
+                    </div>
+                </div>
+                <div class="col-lg-1 ">
                     <div class="logout">
                         <a href="vendor/logout.php">Выход</a>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 ">
-                    <h1>Панель управления </h1>
-                </div>
-            </div>
         </div>
     </header>
+
 
     <section>
         <div class="container">
@@ -69,8 +78,8 @@ if (!$_SESSION['user']) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
-                    <br id="all1" />
-                    <table class="demotable id=" tableexl">
+
+                    <table id="tableexl">
                         <thead>
                             <tr>
                                 <th>Наименование</th>
@@ -97,6 +106,7 @@ if (!$_SESSION['user']) {
                             $sql2 = "SELECT DISTINCT `distr_id`,`distr` FROM `users`";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
+                            $sql2 = "SELECT DISTINCT `distr_id`,`distr` FROM `users`";
                         }
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
@@ -110,7 +120,7 @@ if (!$_SESSION['user']) {
                             <tr>
 
 
-                                <td colspan="10"><a href="#close">свернуть</a><a href="#all1">развернуть</a>
+                                <td colspan="10">
                                     <?= $user[1] ?>
 
                                 </td>
@@ -186,7 +196,19 @@ if (!$_SESSION['user']) {
                 </h4>
                 <div id="form_order">
                     <form class="addform">
+                        <div>
+                            <label>Принадлежность:</label> <select name="dist_id">
+                                <?php
+                                foreach ($users as $userv) {
+                                ?>
+                                    <option value=<?= $userv[0] ?>><?= $userv[1] ?></option>
+                                <?php
+                                }
+                                ?>
 
+                            </select>
+
+                        </div>
                         <div>
                             <label>Наименование:</label> <input type="text" name="name" />
                         </div>
@@ -209,7 +231,7 @@ if (!$_SESSION['user']) {
                             <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
                         </div>
                         <div class="popup-add-subbtn">
-                            <input type="submit" class="add-btn" value="Добавить" />
+                            <input type="submit" class="add-btn-adm" value="Добавить" />
                         </div>
                         <div class="popup-add-msg">
                             <p class="gifload  none"></p>
@@ -236,7 +258,9 @@ if (!$_SESSION['user']) {
                 <div id="form_order">
                     <form class="addform">
 
-
+                        <div>
+                            <label>Принадлежность:</label> <input type="text" name="distr_name" value="<?php if ($_SESSION['form_select']['distr_name']) { ?><?= $_SESSION['form_select']['distr_name'] ?><?php } ?>" />
+                        </div>
                         <div>
                             <label>Наименование:</label> <input type="text" name="name2" value="<?php if ($_SESSION['form_select']['name']) { ?><?= $_SESSION['form_select']['name'] ?><?php } ?>" />
                         </div>
@@ -264,10 +288,10 @@ if (!$_SESSION['user']) {
                             <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
                         </div>
                         <div class="popup-select-subbtn">
-                            <input type="submit" class="select-btn" value="Применить" />
+                            <input type="submit" class="select-btn-adm" value="Применить" />
                         </div>
                         <div class="popup-select-subbtn">
-                            <input type="submit" class="clean-btn" value="Сбросить" />
+                            <input type="submit" class="clean-btn-adm" value="Сбросить" />
                         </div>
                         <div class="popup-select-msg">
                             <p class="gifload  none"></p>

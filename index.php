@@ -1,10 +1,11 @@
 <?php
 session_start();
-
-if ($_SESSION['user']) {
+if ($_SESSION['user'] && $_SESSION['user']['access'] == "0") {
     header('Location: profile.php');
 }
-
+if ($_SESSION['user'] && $_SESSION['user']['access'] == "1") {
+    header('Location: admin.php');
+}
 ?>
 
 <!doctype html>
@@ -33,7 +34,7 @@ if ($_SESSION['user']) {
         <p class="msg none">Lorem ipsum dolor sit amet.</p>
     </form>
 
-    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="assets/js/main.js"></script>
 
 </body>

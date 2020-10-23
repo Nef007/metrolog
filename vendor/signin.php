@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once 'connect.php';
 
@@ -39,9 +38,10 @@ if (mysqli_num_rows($check_user) > 0) {
 
     // Что передавать на сайт?
     $_SESSION['user'] = [
-        "id" => $user['user_id'],
+        // "id" => $user['user_id'],
         "distr" => $user['distr'],
         "distr_id" => $user['distr_id'],
+        "access" => $user['access'],
 
     ];
 

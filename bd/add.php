@@ -2,14 +2,20 @@
 session_start();
 require_once '../vendor/connect.php';
 
+//$dist_id_admin = $_POST['dist_id'];
 $name = $_POST['name'];
 $marka = $_POST['marka'];
 $zav_number = $_POST['zav_number'];
 $dev_data_release = $_POST['dev_data_release'];
 $dev_data_pred_poverki = $_POST['dev_data_pred_poverki'];
 $dev_data_poverki = $_POST['dev_data_poverki'];
-$distr_id = $_SESSION['user']['distr_id'];
+//$distr_id = $_SESSION['user']['distr_id'];
 $pasport = $_FILES['pasport']['name'];
+
+
+if ($_SESSION['user']['access'] === "0") {
+    $distr_id = $_SESSION['user']['distr_id'];
+} else $distr_id = $_POST['dist_id'];
 
 
 // $_SESSION['form_select'] = [
@@ -77,6 +83,9 @@ if (!empty($error_fields)) {
 
 $ext = pathinfo($_FILES['pasport']['name'], PATHINFO_EXTENSION);
 
+
+
+
 if ($_FILES['pasport']) {
 
     if ($ext === "pdf" || $ext === "jpg" || $ext === "png") {
@@ -137,10 +146,8 @@ VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => "Данные некорректны",
+            "message" => $distr_id . "fff",
         ];
         echo json_encode($response);
     }
 }
-
-

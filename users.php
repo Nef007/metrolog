@@ -3,11 +3,9 @@ session_start();
 require_once 'vendor/connect.php';
 require_once 'vendor/functions.php';
 
-if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
+if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
     header('Location: /');
 }
-
-
 ?>
 
 <!doctype html>
@@ -30,18 +28,29 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
+                    <h1>Пользователи </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-1 offset-lg-9 ">
+                    <div class="logout">
+                        <a href="admin.php">Главная</a>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <div class="logout">
+                        <a href="users.php">Пользователи</a>
+                    </div>
+                </div>
+                <div class="col-lg-1 ">
                     <div class="logout">
                         <a href="vendor/logout.php">Выход</a>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 ">
-                    <h1> <?php echo $_SESSION['user']['distr']; ?> </h1>
-                </div>
-            </div>
         </div>
     </header>
+
 
     <section>
         <div class="container">
@@ -49,11 +58,6 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
                 <div class="col-lg-12 ">
                     <button class="button popup-add-btn">
                         Добавить
-                    </button>
-                    <button class="button popup-select-btn  <?php if ($_SESSION['sql']['btn'])
-                                                                echo "select-color";
-                                                            ?>">
-                        Фильтр
                     </button>
 
                     <button class="button loadexel">
@@ -69,63 +73,67 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
+
                     <table id="tableexl">
                         <thead>
                             <tr>
-                                <th>Наименование</th>
-                                <th>Тип,марка</th>
-                                <th>Заводской номер</th>
-                                <th class="noExl">Паспорт</th>
-                                <th>год выпуска</th>
-                                <th>Дата поверки</th>
-                                <th>Дата следующей поверки</th>
+                                <th>Фамилия</th>
+                                <th>Имя</th>
+                                <th>Отчество</th>
+                                <th>Подразделение</th>
+
+                                <th>Логин</th>
+                                <th>Пароль</th>
+                                <th>Права</th>
+
 
 
                             </tr>
                         </thead>
 
+
                         <?php
 
-                        if (empty($_SESSION['sql']['sql'])) {
-                            $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id";
-                        } else {
-                            $sql = $_SESSION['sql']['sql'];
-                        }
-                        $devices = mysqli_query($connect,  $sql);
-                        $devices = mysqli_fetch_all($devices);
-                        foreach ($devices as $device) {
-                            // getExtension  подключенная функция
-                            if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                            } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
-                                $img = $device[7];
-                                $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
-                            } else $img = "1";
+
+                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access` FROM `users` ";
+
+
+
+
+                        $users = mysqli_query($connect,  $sql);
+                        $users = mysqli_fetch_all($users);
+
+
+
+                        foreach ($users as $user) {
+
 
                             echo '
 
-                                 <tr id="tbody"> 
+
+                                 <tr  id="tbody"> 
 
                                     
-                                    <td style="cursor: pointer;">' . $device[1] . '</td>
-                                    <td>' . $device[2] . '</td>
-                                    <td>' . $device[3] . '</td>
-                                    <td class="noExl"> ' . $device[7] . '</td>
-                                    <td>' . $device[4] . '</td>
-                                    <td>' . $device[5] . '</td>
-                                    <td>' . $device[6] . '</td>
-                                    <td class="col_id noExl">' . $device[0] . '</td>
-                                    <td class="col_id noExl">' . $img . '</td>
-                                    <td class="col_id noExl">' . $device[8] . '</td>
-                                    <td class="col_id noExl">' . $device[9] . '</td>
+                                 <td style="cursor: pointer;">  ' . $user[0] . '</td>
+                                    <td>' . $user[1] . '</td>
+                                    <td>' . $user[2] . '</td>
+                                    <td> ' . $user[3] . '</td>
+                                    <td>' . $user[4] . '</td>
+                                    <td>' . $user[5] . '</td>
+                                    <td>' . $user[6] . '</td>
+                                   
+                                    
 
 
                                    </tr>
                                 ';
                         }
 
+
+
                         ?>
+
+
 
                     </table>
                 </div>
@@ -148,30 +156,34 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
                 </h4>
                 <div id="form_order">
                     <form class="addform">
+                        <div>
 
-                        <div>
-                            <label>Наименование:</label> <input type="text" name="name" />
+
                         </div>
                         <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka" />
+                            <label>Фамилия:</label> <input type="text" name="first_name" />
                         </div>
                         <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number" />
+                            <label>Имя:</label> <input type="text" name="last_name" />
                         </div>
                         <div>
-                            <label>Паспорт:</label> <input type="file" name="pasport" />
+                            <label>Отчество:</label> <input type="text" name="patronymic" />
                         </div>
                         <div>
-                            <label>Год выпуска:</label> <input type="date" name="dev_data_release" />
+                            <label>Подразделение:</label> <input type="text" name="distr" />
                         </div>
                         <div>
-                            <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki" />
+                            <label>Логин:</label> <input type="text" name="login" />
                         </div>
                         <div>
-                            <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
+                            <label>Пароль:</label> <input type="text" name="password" />
                         </div>
+                        <div>
+                            <label>Права:</label> <input type="text" name="access" />
+                        </div>
+
                         <div class="popup-add-subbtn">
-                            <input type="submit" class="add-btn" value="Добавить" />
+                            <input type="submit" class="add-btn-adm-user" value="Добавить" />
                         </div>
                         <div class="popup-add-msg">
                             <p class="gifload  none"></p>
@@ -198,7 +210,9 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
                 <div id="form_order">
                     <form class="addform">
 
-
+                        <div>
+                            <label>Принадлежность:</label> <input type="text" name="distr_name" value="<?php if ($_SESSION['form_select']['distr_name']) { ?><?= $_SESSION['form_select']['distr_name'] ?><?php } ?>" />
+                        </div>
                         <div>
                             <label>Наименование:</label> <input type="text" name="name2" value="<?php if ($_SESSION['form_select']['name']) { ?><?= $_SESSION['form_select']['name'] ?><?php } ?>" />
                         </div>
@@ -226,10 +240,10 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1" ) {
                             <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
                         </div>
                         <div class="popup-select-subbtn">
-                            <input type="submit" class="select-btn" value="Применить" />
+                            <input type="submit" class="select-btn-adm" value="Применить" />
                         </div>
                         <div class="popup-select-subbtn">
-                            <input type="submit" class="clean-btn" value="Сбросить" />
+                            <input type="submit" class="clean-btn-adm" value="Сбросить" />
                         </div>
                         <div class="popup-select-msg">
                             <p class="gifload  none"></p>

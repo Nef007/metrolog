@@ -11,9 +11,12 @@ $dev_data_pred_poverki_start = $_POST['dev_data_pred_poverki_start'];
 $dev_data_pred_poverki_end = $_POST['dev_data_pred_poverki_end'];
 $dev_data_poverki_start = $_POST['dev_data_poverki_start'];
 $dev_data_poverki_end = $_POST['dev_data_poverki_end'];
-$distr_id = $_SESSION['user']['distr_id'];
+
+$distr_name = $_POST['distr_name'];
+
 
 $_SESSION['form_select'] = [
+    "distr_name" => $distr_name,
     "name" => $name,
     "marka" => $marka,
     "zav_number" => $zav_number,
@@ -27,9 +30,6 @@ $_SESSION['form_select'] = [
 ];
 
 
-
-
-$error_fields = [];
 
 
 
@@ -46,13 +46,42 @@ function addWhere($where, $add, $and = true, $ferst = false)
     } else $where = $add;
     return $where;
 }
+// Принимаем принадлежность
+$search = explode(' ', $_POST['distr_name']);
+
+
+//если оно есть
+if (!empty($_POST['distr_name'])) {
+    $where = " users.distr_id=device.dist_id AND (";
+    if (count($search) === 1) {
+        //  если оно одно 
+        $where .= addWhere($where, " users.distr LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        $where .= ")";
+    } else {
+        // если их несколько
+        $where .= addWhere($where, " users.distr LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
+        unset($search[0]);
+        foreach ($search as $name) {
+
+            $where = addWhere($where, " users.distr LIKE '%" . htmlspecialchars($name), false) . "%'";
+        }
+
+        $where .= ")";
+    }
+}
+
+
+
 // Принимаем ИМЯ
 $search = explode(' ', $_POST['name']);
 
 
 //если оно есть
 if (!empty($_POST['name'])) {
-    $where = "(";
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
     if (count($search) === 1) {
         //  если оно одно 
         $where .= addWhere($where, "`dev_name` LIKE '%" . htmlspecialchars($search[0]), false, true) . "%'";
@@ -227,8 +256,7 @@ if ($dev_data_poverki_start && $dev_data_poverki_end) {
 
 
 
-$sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`,
-    `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE (users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id) and ";
+$sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users` WHERE ";
 if ($where) {
     $sql .= "$where";
     $_SESSION['sql'] = [
@@ -238,7 +266,7 @@ if ($where) {
 } else {
 
     $_SESSION['sql'] = [
-        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` FROM `device`, `users` WHERE users.distr_id={$_SESSION['user']['distr_id']} and users.distr_id=device.dist_id",
+        "sql" =>  "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users`",
         "btn" => false,
     ];
 }
