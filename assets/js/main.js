@@ -524,12 +524,12 @@ $(".add-btn-adm-user").click(function (e) {
   $(`input`).removeClass("error");
 
   let first_name = $('input[name="first_name"]').val(),
-  last_name = $('input[name="last_name"]').val(),
+    last_name = $('input[name="last_name"]').val(),
     patronymic = $('input[name="patronymic"]').val(),
     distr = $('input[name="distr"]').val();
-    login = $('input[name="login"]').val();
+  login = $('input[name="login"]').val();
   password = $('input[name="password"]').val();
-  access = $('input[name="access"]').val();
+  access = $('select[name="access"]').val();
 
   let formData = new FormData();
 
@@ -555,6 +555,101 @@ $(".add-btn-adm-user").click(function (e) {
         $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
 
+        document.location.href = "../users.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+// изменение пользователя
+
+$(".change-btn-user").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+  distr_id = $('input[name="distr_id"]').val();
+  let first_name = $('input[name="first_name2"]').val(),
+    last_name = $('input[name="last_name2"]').val(),
+    patronymic = $('input[name="patronymic2"]').val(),
+    distr = $('input[name="distr2"]').val();
+  login = $('input[name="login2"]').val();
+  password = $('input[name="password2"]').val();
+  access = $('select[name="access2"]').val();
+
+  let formData = new FormData();
+
+  formData.append("first_name", first_name);
+  formData.append("last_name", last_name);
+  formData.append("patronymic", patronymic);
+  formData.append("distr", distr);
+  formData.append("login", login);
+  formData.append("password", password);
+  formData.append("access", access);
+  formData.append("distr_id", distr_id);
+
+  $.ajax({
+    url: "../../bd/change_user.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../users.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+
+// удаление usera
+
+$(".del-btn-user").click(function (e) {
+  e.preventDefault();
+
+  
+
+  distr_id = $('input[name="distr_id"]').val();
+  
+
+  let formData = new FormData();
+  formData.append("distr_id", distr_id);
+  
+
+  $.ajax({
+    url: "../../bd/del_user.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
         document.location.href = "../users.php";
       } else {
         if (data.type === 1) {

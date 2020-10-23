@@ -95,7 +95,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         <?php
 
 
-                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access` FROM `users` ";
+                        $sql = "SELECT `first_name`,`last_name`,`patronymic`,`distr`,`login`,`password`,`access`, `distr_id`  FROM `users` ";
 
 
 
@@ -114,13 +114,15 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                  <tr  id="tbody"> 
 
                                     
-                                 <td style="cursor: pointer;">  ' . $user[0] . '</td>
+                                 <td style="cursor: pointer;">' . $user[0] . '</td>
                                     <td>' . $user[1] . '</td>
                                     <td>' . $user[2] . '</td>
-                                    <td> ' . $user[3] . '</td>
+                                    <td>' . $user[3] . '</td>
                                     <td>' . $user[4] . '</td>
                                     <td>' . $user[5] . '</td>
                                     <td>' . $user[6] . '</td>
+                                    <td class="col_id noExl">' . $user[7] . '</td>
+                                    
                                    
                                     
 
@@ -144,7 +146,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
 
-    <!-- Модальное окно ДОБАВИТЬ ПРИБОР -->
+    <!-- Модальное окно ДОБАВИТЬ пользоватея -->
     <section>
 
         <div class="popup-add">
@@ -156,10 +158,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                 </h4>
                 <div id="form_order">
                     <form class="addform">
-                        <div>
 
-
-                        </div>
                         <div>
                             <label>Фамилия:</label> <input type="text" name="first_name" />
                         </div>
@@ -179,7 +178,15 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>Пароль:</label> <input type="text" name="password" />
                         </div>
                         <div>
-                            <label>Права:</label> <input type="text" name="access" />
+                            <label>Права:</label> <select name="access">
+
+                                <option value="1">admin</option>
+                                <option value="0">user</option>
+
+
+                            </select>
+
+
                         </div>
 
                         <div class="popup-add-subbtn">
@@ -196,65 +203,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
     </section>
 
 
-    <!-- Модальное окно Выборка -->
 
-    <section>
-        <div class="popup-select">
-
-
-            <div class="popup-content">
-                <button class="popup-close">&times;</button>
-                <h4 class="popup-header">
-                    Фильтр
-                </h4>
-                <div id="form_order">
-                    <form class="addform">
-
-                        <div>
-                            <label>Принадлежность:</label> <input type="text" name="distr_name" value="<?php if ($_SESSION['form_select']['distr_name']) { ?><?= $_SESSION['form_select']['distr_name'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Наименование:</label> <input type="text" name="name2" value="<?php if ($_SESSION['form_select']['name']) { ?><?= $_SESSION['form_select']['name'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Тип,марка:</label> <input type="text" name="marka2" value="<?php if ($_SESSION['form_select']['marka']) { ?><?= $_SESSION['form_select']['marka'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Заводской №:</label> <input type="text" name="zav_number2" value="<?php if ($_SESSION['form_select']['zav_number']) { ?><?= $_SESSION['form_select']['zav_number'] ?><?php } ?>" />
-                        </div>
-
-                        <div>
-                            <label>Год выпуска: </label>
-
-                            c<input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_start" value="<?php if ($_SESSION['form_select']['dev_data_release_start']) { ?><?= $_SESSION['form_select']['dev_data_release_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="number" min="1900" max="2099" step="1" name="dev_data_release2_end" value="<?php if ($_SESSION['form_select']['dev_data_release_end']) { ?><?= $_SESSION['form_select']['dev_data_release_end'] ?><?php } ?>" />
-
-
-                        </div>
-                        <div>
-                            <label>Дата поверки:</label> с<input class="input-min" type="date" name="dev_data_pred_poverki2_start" value="<?php if ($_SESSION['form_select']['dev_data_pred_poverki_start']) { ?><?= $_SESSION['form_select']['dev_data_pred_poverki_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="date" name="dev_data_pred_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_pred_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_pred_poverki_end'] ?><?php } ?>" />
-                        </div>
-                        <div>
-                            <label>Дата след. поверки:</label> с<input class="input-min" type="date" name="dev_data_poverki2_start" value="<?php if ($_SESSION['form_select']['dev_data_poverki_start']) { ?><?= $_SESSION['form_select']['dev_data_poverki_start'] ?><?php } ?>" />по
-                            <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
-                        </div>
-                        <div class="popup-select-subbtn">
-                            <input type="submit" class="select-btn-adm" value="Применить" />
-                        </div>
-                        <div class="popup-select-subbtn">
-                            <input type="submit" class="clean-btn-adm" value="Сбросить" />
-                        </div>
-                        <div class="popup-select-msg">
-                            <p class="gifload  none"></p>
-                            <p class="msg  none">LOrem</p>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </section>
 
     <!-- Модальное окно Изменить -->
 
@@ -265,103 +214,57 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
             <div class="popup-content">
                 <button class="popup-close">&times;</button>
                 <h4 class="popup-header">
-                    Свойства
+                    Изменить
                 </h4>
-
-                <!-- Навигация вкладки -->
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#description">Изменение</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#characteristics">Списание</a>
-                    </li>
-
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="description">
+                <div id="form_order">
+                    <form class="addform">
 
 
-                        <form class="addform">
+                        <img class="del-btn-user" src="assets\img\del.png" width="50">
+                        <div>
+                            <input type="hidden" name="distr_id" id="distr_id" />
+                        </div>
+                        <div>
+                            <label>Фамилия:</label> <input type="text" name="first_name2" id="first_name" />
+                        </div>
+                        <div>
+                            <label>Имя:</label> <input type="text" name="last_name2" id="last_name" />
+                        </div>
+                        <div>
+                            <label>Отчество:</label> <input type="text" name="patronymic2" id="patronymic" />
+                        </div>
+                        <div>
+                            <label>Подразделение:</label> <input type="text" name="distr2" id="distr" />
+                        </div>
+                        <div>
+                            <label>Логин:</label> <input type="text" name="login2" id="login" />
+                        </div>
+                        <div>
+                            <label>Пароль:</label> <input type="text" name="password2" id="password" />
+                        </div>
+                        <div>
+                            <label>Права:</label> <select name="access2" id="access">
 
-
-                            <div>
-                                <input type="hidden" name="dev_id" id="dev_id" />
-                            </div>
-                            <div>
-                                <label>Наименование:</label> <input type="text" name="name3" id="name" disabled="" />
-                            </div>
-                            <div>
-                                <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" disabled="" />
-                            </div>
-                            <div>
-                                <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" disabled="" />
-                            </div>
-                            <div>
-                                <label>Паспорт:</label>
-
-
-
-                                <input class="vibor" type="file" name="pasport" />
-                                <div class="per"> <a id="seatch_bt" href="" target="_blank">
-                                        <img src="assets\img\file.png" width="50"></a>
-                                    <img class="del-btn" src="assets\img\del.png" width="20">
-
-                                </div>
-
-
-
-
-                            </div>
-                            <div>
-                                <label>Год выпуска:</label> <input type="date" name="dev_data_release3" id="dev_data_release3" />
-                            </div>
-                            <div>
-                                <label>Дата поверки:</label> <input type="date" name="dev_data_pred_poverki3" id="dev_data_pred_poverki3" />
-                            </div>
-                            <div>
-                                <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
-                            </div>
-                            <div class="popup-add-subbtn">
-                                <input type="submit" class="change-btn" value="Сохранить" />
-                            </div>
-                            <div class="popup-add-msg">
-                                <p class="gifload  none"></p>
-                                <p class="msg  none">LOrem</p>
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="tab-pane fade" id="characteristics">
-                        <form class="addform">
-
-                            <label>АКТ списания:</label>
-                            <input class="vibor1" type="file" name="akt" />
-                            <div class="per1"> <a id="akt_bt" href="" target="_blank">
-                                    <img src="assets\img\file.png" width="50"></a>
-                                <img class="del-btn" src="assets\img\del.png" width="20">
-
-                            </div>
-
-                            <label>Статус:</label> <input type="text" name="status" id="status" disabled="" />
-
-                            <div class="popup-spisat-subbtn">
-                                <input type="submit" class="spisat-btn" value="Списать" />
-                            </div>
-                            <div class="popup-add-msg">
-                                <p class="gifload  none"></p>
-                                <p class="msg  none">LOrem</p>
-                            </div>
-
-                        </form>
-                    </div>
+                                <option value="1">admin</option>
+                                <option value="0">user</option>
+                        </div>
+                        <div class="popup-add-subbtn">
+                            <input type="submit" class="change-btn-user" value="Сохранить" />
+                        </div>
+                        <div class="popup-add-msg">
+                            <p class="gifload  none"></p>
+                            <p class="msg  none">LOrem</p>
+                        </div>
+                    </form>
 
                 </div>
 
 
-
-
             </div>
+
+
+
+
         </div>
     </section>
 
@@ -388,80 +291,31 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
 
 
-            $(".popup-select-btn").on("click", function() {
-                $(".popup-select").fadeIn();
-                $(".msg").addClass("none");
-                $(`input`).removeClass("error");
 
-            });
             $("tr#tbody").on("dblclick", function() {
                 $(".popup-change").fadeIn();
                 $(".msg").addClass("none");
                 $(`input`).removeClass("error");
 
-                let name = $(this).children('td:first-child').text();
-                let marka = $(this).children('td:nth-child(2)').text();
-                let zav_number = $(this).children('td:nth-child(3)').text();
+                let first_name = $(this).children('td:first-child').text();
+                let last_name = $(this).children('td:nth-child(2)').text();
+                let patronymic = $(this).children('td:nth-child(3)').text();
 
-                let dev_data_release3 = $(this).children('td:nth-child(5)').text();
-                let dev_data_pred_poverki3 = $(this).children('td:nth-child(6)').text();
-                let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
-                let dev_id = $(this).children('td:nth-child(8)').text();
-                pasport = $(this).children('td:nth-child(9)').text();
-                let status = $(this).children('td:nth-child(10)').text();
-                let akt = $(this).children('td:nth-child(11)').text();
-                $('#name').val(name);
-                $('#marka').val(marka);
-                $('#zav_number').val(zav_number);
-                $('#pasport').val(pasport);
-                $('#dev_data_release3').val(dev_data_release3);
-                $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
-                $('#dev_data_poverki3').val(dev_data_poverki3);
-                $('#dev_id').val(dev_id);
-                $('#status').val(getstringstatus(status));
+                let distr = $(this).children('td:nth-child(4)').text();
+                let login = $(this).children('td:nth-child(5)').text();
+                let password = $(this).children('td:nth-child(6)').text();
 
+                access = $(this).children('td:nth-child(7)').text();
+                distr_id = $(this).children('td:nth-child(8)').text();
 
-                function getstringstatus($num) {
-                    if ($num === "") {
-                        $status = "В работе"
-                    }
-                    if ($num === "1") {
-                        $status = "На подтверждении"
-                    }
-                    if ($num === "3") {
-                        $status = "Списан"
-                    }
-                    return $status;
-                }
-                // Обработка поля загрузки файла паспорта
-                document.getElementById('seatch_bt').href = pasport;
-                if (pasport === "1") {
-                    $(".per").removeClass("del");
-                    $(".vibor").removeClass("none");
-                    $(".per").addClass("none");
-
-
-                } else {
-                    $(".vibor").addClass("none");
-                    $(".per").removeClass("none");
-                    $(".per").addClass("del");
-
-                }
-                // Обработка поля загрузки файла списания
-                document.getElementById('akt_bt').href = akt;
-                if (akt === "") {
-                    $(".per1").removeClass("del");
-                    $(".vibor1").removeClass("none");
-                    $(".per1").addClass("none");
-
-
-                } else {
-                    $(".vibor1").addClass("none");
-                    $(".per1").removeClass("none");
-                    $(".per1").addClass("del");
-
-                }
-
+                $('#first_name').val(first_name);
+                $('#last_name').val(last_name);
+                $('#patronymic').val(patronymic);
+                $('#distr').val(distr);
+                $('#login').val(login);
+                $('#password').val(password);
+                $('#access').val(access);
+                $('#distr_id').val(distr_id);
 
 
             });
