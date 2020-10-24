@@ -11,6 +11,9 @@ $dev_data_pred_poverki_start = $_POST['dev_data_pred_poverki_start'];
 $dev_data_pred_poverki_end = $_POST['dev_data_pred_poverki_end'];
 $dev_data_poverki_start = $_POST['dev_data_poverki_start'];
 $dev_data_poverki_end = $_POST['dev_data_poverki_end'];
+$fif = $_POST['fif'];
+$prikaz = $_POST['prikaz'];
+$to = $_POST['to'];
 
 $distr_name = $_POST['distr_name'];
 
@@ -18,6 +21,9 @@ $distr_name = $_POST['distr_name'];
 $_SESSION['form_select'] = [
     "distr_name" => $distr_name,
     "name" => $name,
+    "fif" => $fif,
+    "prikaz" => $prikaz,
+    "to" => $to,
     "marka" => $marka,
     "zav_number" => $zav_number,
     "dev_data_release_start" => $dev_data_release_start,
@@ -248,6 +254,44 @@ if ($dev_data_poverki_start && $dev_data_poverki_end) {
         $where .= ")";
     }
 }
+
+// Принимаем fif
+if (!empty($_POST['fif'])) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "`fif` LIKE '%" . htmlspecialchars($fif), false, true) . "%'";
+
+    $where .= ")";
+}
+
+// Принимаем приказ
+if (!empty($_POST['prikaz'])) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "`prikaz` LIKE '%" . htmlspecialchars($prikaz), false, true) . "%'";
+
+    $where .= ")";
+}
+
+// Принимаем то
+if (!empty($_POST['to'])) {
+
+    if ($where) {
+        $where .= "AND (";
+    } else $where = "(";
+
+    $where .= addWhere($where, "`tex_o` LIKE '%" . htmlspecialchars($to), false, true) . "%'";
+
+    $where .= ")";
+}
+
+
 
 
 

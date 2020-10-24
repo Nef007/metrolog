@@ -226,6 +226,9 @@ $(".select-btn-adm").click(function (e) {
 
   let name = $('input[name="name2"]').val(),
     marka = $('input[name="marka2"]').val(),
+    fif = $('input[name="fif2"]').val(),
+    prikaz = $('input[name="prikaz2"]').val(),
+    to = $('input[name="to2"]').val(),
     distr_name = $('input[name="distr_name"]').val(),
     zav_number = $('input[name="zav_number2"]').val(),
     dev_data_release_start = $('input[name="dev_data_release2_start"]').val();
@@ -241,6 +244,9 @@ $(".select-btn-adm").click(function (e) {
 
   let formData = new FormData();
   formData.append("name", name);
+  formData.append("fif", fif);
+  formData.append("prikaz", prikaz);
+  formData.append("to", to);
   formData.append("marka", marka);
   formData.append("distr_name", distr_name);
   formData.append("zav_number", zav_number);
@@ -622,20 +628,15 @@ $(".change-btn-user").click(function (e) {
   });
 });
 
-
 // удаление usera
 
 $(".del-btn-user").click(function (e) {
   e.preventDefault();
 
-  
-
   distr_id = $('input[name="distr_id"]').val();
-  
 
   let formData = new FormData();
   formData.append("distr_id", distr_id);
-  
 
   $.ajax({
     url: "../../bd/del_user.php",
@@ -651,6 +652,101 @@ $(".del-btn-user").click(function (e) {
         $(".gifload").addClass("none");
         $(".msg").removeClass("none").text(data.message);
         document.location.href = "../users.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+// удаление устройства
+
+$(".delite-btn").click(function (e) {
+  e.preventDefault();
+
+  dev_id = $('input[name="dev_id"]').val();
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+
+  $.ajax({
+    url: "../../bd/del_device.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../admin.php";
+      } else {
+        if (data.type === 1) {
+          data.fields.forEach(function (field) {
+            $(`input[name="${field}"]`).addClass("error");
+          });
+        }
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+      }
+    },
+  });
+});
+
+// изменение устройства админом
+
+$(".change-btn-adm").click(function (e) {
+  e.preventDefault();
+
+  $(`input`).removeClass("error");
+
+  let name = $('input[name="name3"]').val(),
+    dev_id = $('input[name="dev_id"]').val(),
+    fif = $('input[name="fif"]').val(),
+    prikaz = $('input[name="prikaz"]').val(),
+    to = $('input[name="to"]').val(),
+    marka = $('input[name="marka3"]').val(),
+    zav_number = $('input[name="zav_number3"]').val(),
+    dev_data_release = $('input[name="dev_data_release3"]').val();
+  dev_data_pred_poverki = $('input[name="dev_data_pred_poverki3"]').val();
+  dev_data_poverki = $('input[name="dev_data_poverki3"]').val();
+
+  let formData = new FormData();
+  formData.append("dev_id", dev_id);
+  formData.append("name", name);
+  formData.append("marka", marka);
+  formData.append("zav_number", zav_number);
+  formData.append("pasport", pasport);
+  formData.append("dev_data_release", dev_data_release);
+  formData.append("dev_data_pred_poverki", dev_data_pred_poverki);
+  formData.append("dev_data_poverki", dev_data_poverki);
+  formData.append("fif", fif);
+  formData.append("prikaz", prikaz);
+  formData.append("to", to);
+
+  $.ajax({
+    url: "../../bd/change_adm.php",
+    type: "POST",
+    dataType: "json",
+    processData: false,
+    contentType: false,
+    beforeSend: funcBefore,
+    cache: false,
+    data: formData,
+    success(data) {
+      if (data.status) {
+        $(".gifload").addClass("none");
+        $(".msg").removeClass("none").text(data.message);
+        document.location.href = "../admin.php";
       } else {
         if (data.type === 1) {
           data.fields.forEach(function (field) {

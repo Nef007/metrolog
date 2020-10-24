@@ -86,9 +86,9 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                 <th>Тип,марка</th>
                                 <th>Заводской номер</th>
                                 <th class="noExl">Паспорт</th>
-                                <th>год выпуска</th>
+                                <th>Год выпуска</th>
                                 <th>Дата поверки</th>
-                                <th>Дата следующей поверки</th>
+                                <th>Дата след. поверки</th>
                                 <th>ФИФ</th>
                                 <th>Приказ</th>
                                 <th>ТО</th>
@@ -116,16 +116,16 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
                         foreach ($users as $user) {  ?>
 
+                            <thead>
+                                <tr>
 
-                            <tr>
 
+                                    <th colspan="10">
+                                        <?= $user[1] ?>
 
-                                <td colspan="10">
-                                    <?= $user[1] ?>
-
-                                </td>
-                            </tr>
-
+                                    </th>
+                                </tr>
+                            </thead>
 
 
 
@@ -149,10 +149,10 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                  <tr  id="tbody"> 
 
                                     
-                                 <td style="cursor: pointer;">  ' . $device[1] . '</td>
+                                 <td class="td-max" style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
-                                    <td class="noExl"> ' . $device[7] . '</td>
+                                    <td class="td-min noExl"> ' . $device[7] . '</td>
                                     <td>' . $device[4] . '</td>
                                     <td>' . $device[5] . '</td>
                                     <td>' . $device[6] . '</td>
@@ -160,9 +160,9 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                     <td class="col_id noExl">' . $img . '</td>
                                     <td class="col_id noExl">' . $device[8] . '</td>
                                     <td class="col_id noExl">' . $device[9] . '</td>
-                                    <td ">' . $device[10] . '</td>
-                                    <td ">' . $device[11] . '</td>
-                                    <td ">' . $device[12] . '</td>
+                                    <td class="td-min">' . $device[10] . '</td>
+                                    <td class="td-min">' . $device[11] . '</td>
+                                    <td class="td-min">' . $device[12] . '</td>
 
 
                                    </tr>
@@ -230,6 +230,8 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         <div>
                             <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki" />
                         </div>
+
+
                         <div class="popup-add-subbtn">
                             <input type="submit" class="add-btn-adm" value="Добавить" />
                         </div>
@@ -287,6 +289,15 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>Дата след. поверки:</label> с<input class="input-min" type="date" name="dev_data_poverki2_start" value="<?php if ($_SESSION['form_select']['dev_data_poverki_start']) { ?><?= $_SESSION['form_select']['dev_data_poverki_start'] ?><?php } ?>" />по
                             <input class="input-min" type="date" name="dev_data_poverki2_end" value="<?php if ($_SESSION['form_select']['dev_data_poverki_end']) { ?><?= $_SESSION['form_select']['dev_data_poverki_end'] ?><?php } ?>" />
                         </div>
+                        <div>
+                            <label>ФИФ:</label> <input type="text" name="fif2" value="<?php if ($_SESSION['form_select']['fif']) { ?><?= $_SESSION['form_select']['fif'] ?><?php } ?>" />
+                        </div>
+                        <div>
+                            <label>Приказ:</label> <input type="text" name="prikaz2"  value="<?php if ($_SESSION['form_select']['prikaz']) { ?><?= $_SESSION['form_select']['prikaz'] ?><?php } ?>"/>
+                        </div>
+                        <div>
+                            <label>ТО:</label> <input type="text" name="to2" value="<?php if ($_SESSION['form_select']['to']) { ?><?= $_SESSION['form_select']['to'] ?><?php } ?>" />
+                        </div>
                         <div class="popup-select-subbtn">
                             <input type="submit" class="select-btn-adm" value="Применить" />
                         </div>
@@ -337,13 +348,13 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                                 <input type="hidden" name="dev_id" id="dev_id" />
                             </div>
                             <div>
-                                <label>Наименование:</label> <input type="text" name="name3" id="name" disabled="" />
+                                <label>Наименование:</label> <input type="text" name="name3" id="name" />
                             </div>
                             <div>
-                                <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" disabled="" />
+                                <label>Тип,марка:</label> <input type="text" name="marka3" id="marka" />
                             </div>
                             <div>
-                                <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" disabled="" />
+                                <label>Заводской №:</label> <input type="text" name="zav_number3" id="zav_number" />
                             </div>
                             <div>
                                 <label>Паспорт:</label>
@@ -370,8 +381,17 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <div>
                                 <label>Дата след. поверки:</label> <input type="date" name="dev_data_poverki3" id="dev_data_poverki3" />
                             </div>
+                            <div>
+                                <label>ФИФ:</label> <input type="text" name="fif" id="fif" />
+                            </div>
+                            <div>
+                                <label>Приказ:</label> <input type="text" name="prikaz" id="prikaz" />
+                            </div>
+                            <div>
+                                <label>ТО:</label> <input type="text" name="to" id="to" />
+                            </div>
                             <div class="popup-add-subbtn">
-                                <input type="submit" class="change-btn" value="Сохранить" />
+                                <input type="submit" class="change-btn-adm" value="Сохранить" />
                             </div>
                             <div class="popup-add-msg">
                                 <p class="gifload  none"></p>
@@ -394,11 +414,14 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>Статус:</label> <input type="text" name="status" id="status" disabled="" />
 
                             <div class="popup-spisat-subbtn">
-                                <input type="submit" class="spisat-btn" value="Списать" />
+                                <input type="submit" class="delite-btn" value="Удалить" />
                             </div>
+
+
+
                             <div class="popup-add-msg">
                                 <p class="gifload  none"></p>
-                                <p class="msg  none">LOrem</p>
+                                <p class="msg none">Lorem</p>
                             </div>
 
                         </form>
@@ -456,8 +479,11 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                 let dev_data_poverki3 = $(this).children('td:nth-child(7)').text();
                 let dev_id = $(this).children('td:nth-child(8)').text();
                 pasport = $(this).children('td:nth-child(9)').text();
-                let status = $(this).children('td:nth-child(10)').text();
+                let $status = $(this).children('td:nth-child(10)').text();
                 let akt = $(this).children('td:nth-child(11)').text();
+                let fif = $(this).children('td:nth-child(12)').text();
+                let prikaz = $(this).children('td:nth-child(13)').text();
+                let to = $(this).children('td:nth-child(14)').text();
                 $('#name').val(name);
                 $('#marka').val(marka);
                 $('#zav_number').val(zav_number);
@@ -466,7 +492,10 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                 $('#dev_data_pred_poverki3').val(dev_data_pred_poverki3);
                 $('#dev_data_poverki3').val(dev_data_poverki3);
                 $('#dev_id').val(dev_id);
-                $('#status').val(getstringstatus(status));
+                $('#fif').val(fif);
+                $('#prikaz').val(prikaz);
+                $('#to').val(to);
+                $('#status').val(getstringstatus($status));
 
 
                 function getstringstatus($num) {
