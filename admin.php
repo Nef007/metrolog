@@ -103,10 +103,10 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
                         if (empty($_SESSION['sql']['sql'])) {
                             $sql = "SELECT DISTINCT `id`,`dev_name`,`dev_marka`,`dev_zav_number`, `dev_data_release`, `dev_data_pred_poverki`, `dev_data_poverki`, `dev_img` , `status`, `dev_akt_img`,`fif`,`prikaz`,`tex_o`,`dist_id` FROM `device`, `users`";
-                            $sql2 = "SELECT DISTINCT `distr_id`,`distr` FROM `users`";
+                            $sql2 = "SELECT DISTINCT `distr_id`,`distr`,`access` FROM `users`";
                         } else {
                             $sql = $_SESSION['sql']['sql'];
-                            $sql2 = "SELECT DISTINCT `distr_id`,`distr` FROM `users`";
+                            $sql2 = "SELECT DISTINCT `distr_id`,`distr`,`access` FROM `users`";
                         }
                         $devices = mysqli_query($connect,  $sql);
                         $devices = mysqli_fetch_all($devices);
@@ -114,41 +114,58 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                         $users = mysqli_query($connect,  $sql2);
                         $users = mysqli_fetch_all($users);
 
-                        foreach ($users as $user) {  ?>
-
-                            <thead>
-                                <tr>
+                        foreach ($users as $user) {
 
 
-                                    <th colspan="10">
-                                        <?= $user[1] ?>
+                            if ($user[2] === "1") {
+                                continue;
+                            } else {
+                        ?>
 
-                                    </th>
-                                </tr>
-                            </thead>
+
+
+
+                                <thead>
+                                    <tr>
+
+
+                                        <th colspan="10">
+                                            <?= $user[1] ?>
+
+                                        </th>
+                                    </tr>
+                                </thead>
 
 
 
 
                         <?php
-                            foreach ($devices as $device) {
+                                foreach ($devices as $device) {
 
-                                if ($device[13] == $user[0]) {
-                                    // getExtension  подключенная функция
-                                    if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
-                                        $img = $device[7];
-                                        $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
-                                    } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
-                                        $img = $device[7];
-                                        $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
-                                    } else $img = "1";
-
-                                    echo '
+                                    if ($device[13] == $user[0]) {
+                                        // getExtension  подключенная функция
+                                        if (!empty($device[7]) && getExtension($device[7]) === "pdf") {
+                                            $img = $device[7];
+                                            $device[7] = '<a href="' . $img  . '" target="_blank"> <img src="assets\img\pdf.png" width="50" alt=""></a>';
+                                        } elseif (!empty($device[7]) && (getExtension($device[7]) === "jpg" || getExtension($device[7]) === "png")) {
+                                            $img = $device[7];
+                                            $device[7] = '<a href="' . $device[7] . '" target="_blank"> <img src="assets\img\jpg.png" width="50" alt=""></a>';
+                                        } else $img = "1";
 
 
-                                 <tr  id="tbody"> 
 
-                                    
+                                        if (date('Y-m-d') >= $device[6] && $device[8] == "1") {
+                                            echo '<tr id="tbody" class="eloy">';
+                                        } elseif (date('Y-m-d') >= $device[6]) {
+                                            echo '<tr id="tbody" class="red">';
+                                        } elseif ($device[8] == "1") {
+                                            echo '<tr id="tbody" class="eloy">';
+                                        } else {
+                                            echo '<tr id="tbody">';
+                                        }
+
+
+                                        echo '  
                                  <td class="td-max" style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
@@ -167,6 +184,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
 
                                    </tr>
                                 ';
+                                    }
                                 }
                             }
                         }
@@ -293,7 +311,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "0") {
                             <label>ФИФ:</label> <input type="text" name="fif2" value="<?php if ($_SESSION['form_select']['fif']) { ?><?= $_SESSION['form_select']['fif'] ?><?php } ?>" />
                         </div>
                         <div>
-                            <label>Приказ:</label> <input type="text" name="prikaz2"  value="<?php if ($_SESSION['form_select']['prikaz']) { ?><?= $_SESSION['form_select']['prikaz'] ?><?php } ?>"/>
+                            <label>Приказ:</label> <input type="text" name="prikaz2" value="<?php if ($_SESSION['form_select']['prikaz']) { ?><?= $_SESSION['form_select']['prikaz'] ?><?php } ?>" />
                         </div>
                         <div>
                             <label>ТО:</label> <input type="text" name="to2" value="<?php if ($_SESSION['form_select']['to']) { ?><?= $_SESSION['form_select']['to'] ?><?php } ?>" />
