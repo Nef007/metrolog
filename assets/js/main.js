@@ -483,7 +483,7 @@ $(".spisat-btn").click(function (e) {
 
 // удаление акта списания
 
-$(".del-btn").click(function (e) {
+$(".del-btn-akt").click(function (e) {
   e.preventDefault();
 
   $(`input`).removeClass("error");

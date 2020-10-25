@@ -104,7 +104,7 @@ if ($_FILES['pasport']) {
             echo json_encode($response);
         }
 
-        if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `dev_img`='$path' WHERE `id`=$dev_id")) {
+        if (mysqli_query($connect, "UPDATE `device` SET  `dev_name`='$name', `dev_marka`='$marka', `dev_zav_number`='$zav_number', `dev_data_release`='$dev_data_release', `dev_data_pred_poverki`='$dev_data_pred_poverki',  `dev_data_poverki`='$dev_data_poverki', `fif`='$fif', `prikaz`='$prikaz', `tex_o`='$to', `dev_img`='$path' WHERE `id`=$dev_id")) {
 
 
 

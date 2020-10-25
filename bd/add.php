@@ -99,7 +99,7 @@ if ($_FILES['pasport']) {
             echo json_encode($response);
         }
 
-        if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
+        if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`)
 VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', '$path')")) {
 
 
@@ -132,7 +132,7 @@ VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '
     }
 } else {
 
-    if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`) 
+    if (mysqli_query($connect, "INSERT INTO `device` (`id`, `dist_id`, `fif`, `dev_name`, `dev_marka`, `dev_zav_number`, `tex_o`, `prikaz`, `dev_data_release`, `dev_data_pred_poverki`,  `dev_data_poverki`, `dev_img`)
 VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '$dev_data_release', '$dev_data_pred_poverki', '$dev_data_poverki', NULL)")) {
 
 
@@ -146,7 +146,7 @@ VALUES (NULL, '$distr_id', NULL, '$name', '$marka', '$zav_number', NULL, NULL, '
         $response = [
             "status" => false,
             "type" => 2,
-            "message" => $distr_id . "fff",
+            "message" => "Данные некорректны",
         ];
         echo json_encode($response);
     }

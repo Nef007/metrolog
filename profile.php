@@ -117,9 +117,9 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
 
                             echo '
 
-                                
 
-                                    
+
+
                                     <td style="cursor: pointer;">' . $device[1] . '</td>
                                     <td>' . $device[2] . '</td>
                                     <td>' . $device[3] . '</td>
@@ -337,7 +337,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                             <input class="vibor1" type="file" name="akt" />
                             <div class="per1"> <a id="akt_bt" href="" target="_blank">
                                     <img src="assets\img\file.png" width="50"></a>
-                                <img class="del-btn" src="assets\img\del.png" width="20">
+                                <img class="del-btn-akt" src="assets\img\del.png" width="20">
 
                             </div>
 
@@ -478,7 +478,7 @@ if (!$_SESSION['user'] || $_SESSION['user']['access'] == "1") {
                     exclude: ".noExl",
                     name: "SI",
                     filename: "Выгрузка_в_Exel.xls",
-                    fileext: ".xls", //File extension type 
+                    fileext: ".xls", //File extension type
                     exclude_img: true,
                     exclude_links: true,
                     exclude_inputs: true,
